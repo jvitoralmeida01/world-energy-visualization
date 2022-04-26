@@ -1,23 +1,26 @@
-import logo from './logo.svg';
-import './App.css';
+//Custom Components
+import Title from './components/Title'
+import World from './components/World'
+import Graphs from './components/Graphs'
 
 function App() {
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+    <div>
+      <div className="world-map">
+        <World />
+      </div>
+
+      <section className="container">
+
+        <div className="item-title">
+          <Title text="World Energy Visualization"/>
+        </div>
+
+        <div className="item-graphs">
+          <Graphs />
+        </div>
+
+      </section>
     </div>
   );
 }
