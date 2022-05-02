@@ -21,32 +21,31 @@ ChartJS.register(
 );
 
 function filterByCountryAndYear(d){
-  return (d.country == "Brazil") && d.year >= 2000;
+  return (d.country == "Brazil") && d.year == 2000;
 }
 
 async function fetchDataset(){
-  let data1 = await d3.csv("https://raw.githubusercontent.com/owid/energy-data/master/owid-energy-data.csv");
-  let labels = ["biofuel_share_elec", "coal_share_elec", "gas_share_elec", "hydro_share_elec", "oil_share_elec",
-    "solar_share_elec", "wind_share_elec", "nuclear_share_elec"];
-  let dataset = []
+  let originalData = await d3.csv("https://raw.githubusercontent.com/owid/energy-data/master/owid-energy-data.csv");
+  let labels = ["biofuel_share_elec", "coal_share_elec", "gas_share_elec", "hydro_share_elec", "nuclear_share_elec",
+  "oil_share_elec", "solar_share_elec", "wind_share_elec"];
+  let wantedData = [];
 
   for (let i = 0; i < labels.length; i++){
     let column = labels[i];
-    let data2 = data1.filter(filterByCountryAndYear)
-    let newDataset = 
-    {
-      label: column,
-      data: data2.map(x => x[column]),
-      backgroundColor: 'rgba(255, 99, 132, 0.5)',
-    }
-    dataset.push(newDataset)
+    let filtredData = originalData.filter(filterByCountryAndYear)
+
+    wantedData.push(filtredData.map(x => x[column])[0])
   }
-  return dataset;
+  let dataset1 = [{
+    label: "Array de Dados",
+    data: wantedData,
+    backgroundColor: '#00008B',
+  }];
+  return dataset1;
 }
 
 async function createData(){
-  let labels = ["biofuel_share_elec", "coal_share_elec", "gas_share_elec", "hydro_share_elec", "oil_share_elec",
-    "solar_share_elec", "wind_share_elec", "nuclear_share_elec"];
+  let labels = ["Biofuel", "Coal", "Gas", "Hydro", "Nuclear", "Oil", "Solar", "Wind"];
   let datasets = await fetchDataset();
 
   return {
@@ -70,12 +69,13 @@ export default function Matriz_bar_chart() {
     {
       labels: ["Aguardando"], 
       datasets: [
-        {data: 5}
+        
       ]
     }
   );
   async function teste() {
     let data1 = await createData()
+    debugger;
     setData(data1)
   }  
   teste();
