@@ -13,7 +13,7 @@ export default function WorldMap({ data }){
     useEffect(() => {
         const {width, height} = dimensions || wrapperRef.current.getBoundingClientRect();
         const svg = select(svgRef.current);
-        svg.attr("width", "100%").attr("height", "100%").style("stroke", "black").style("stroke-width", width/2000);
+        svg.attr("width", width).attr("height", height).style("stroke", "black").style("stroke-width", width/2000);
 
         const projection = geoMercator().fitSize([width, height], selectedCountry || data).precision(100);
         const pathFactory = geoPath().projection(projection);
@@ -28,7 +28,7 @@ export default function WorldMap({ data }){
           .on("mouseover", (d, feature) => {
             setHoveredCountry(feature);
           })
-          .on("mouseout", (d, feature) => {
+          .on("mouseout", () => {
             setHoveredCountry(null);
           })
           .attr('class', 'country')

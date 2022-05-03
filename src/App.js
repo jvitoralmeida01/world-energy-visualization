@@ -8,7 +8,22 @@ import data from "./worldMap.geo.json";
 function App() {
   return (
     <div>
-      <WorldMap data={data}/>
+
+      <section className="container">
+
+        <div className="item-map">
+          <WorldMap data={data}/>
+        </div>
+
+        <div className="item-title">
+          <Title text="World Energy Visualization"/>
+        </div>
+
+        <div className="item-graphs">
+          <Graphs />
+        </div>
+
+      </section>
     </div>
   );
 }

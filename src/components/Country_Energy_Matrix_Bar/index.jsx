@@ -52,7 +52,7 @@ async function createData(){
     datasets: [{
       label: "Array de Dados",
       data: filteredDataset,
-      backgroundColor: '#00008B',
+      backgroundColor: 'cyan',
     }],
   };
 }
@@ -68,6 +68,7 @@ function Country_Energy_Matrix_Bar() {
     responsive: true,
     plugins: {
       title: {
+        color: '#fff',
         display: true,
         text: 'Country Energy Matrix',
       },
