@@ -57,7 +57,7 @@ async function createData(){
   };
 }
 
-function Matriz_bar_chart() {
+function Country_Energy_Matrix_Bar() {
   const [data, setData] = useState(
     {
       labels: ["Waiting Data"], 
@@ -86,4 +86,4 @@ function Matriz_bar_chart() {
     </div>);
 }
 
-export default Matriz_bar_chart;
+export default Country_Energy_Matrix_Bar;
