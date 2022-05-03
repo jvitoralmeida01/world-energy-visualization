@@ -20,67 +20,70 @@ ChartJS.register(
   Legend
 );
 
-function filterByCountryAndYear(d){
-  return (d.country == "Brazil") && d.year == 2000;
-}
-
 async function fetchDataset(){
   let originalData = await d3.csv("https://raw.githubusercontent.com/owid/energy-data/master/owid-energy-data.csv");
+  return originalData;
+}
+
+function filterByCountryAndYear(d){
+  return (d.country == "Brazil") && (d.year == 2000);
+}
+
+function filterDataset(rawDataset){
   let labels = ["biofuel_share_elec", "coal_share_elec", "gas_share_elec", "hydro_share_elec", "nuclear_share_elec",
   "oil_share_elec", "solar_share_elec", "wind_share_elec"];
   let wantedData = [];
+  let filtredData = rawDataset.filter(filterByCountryAndYear);
 
   for (let i = 0; i < labels.length; i++){
     let column = labels[i];
-    let filtredData = originalData.filter(filterByCountryAndYear)
-
-    wantedData.push(filtredData.map(x => x[column])[0])
+    wantedData.push(filtredData[0][column])
   }
-  let dataset1 = [{
-    label: "Array de Dados",
-    data: wantedData,
-    backgroundColor: '#00008B',
-  }];
-  return dataset1;
+
+  return wantedData;
 }
 
 async function createData(){
-  let labels = ["Biofuel", "Coal", "Gas", "Hydro", "Nuclear", "Oil", "Solar", "Wind"];
-  let datasets = await fetchDataset();
+  let rawDataset = await fetchDataset();
+  let filteredDataset = filterDataset(rawDataset);
 
   return {
-    labels,
-    datasets,
+    labels: ["Biofuel", "Coal", "Gas", "Hydro", "Nuclear", "Oil", "Solar", "Wind"],
+    datasets: [{
+      label: "Array de Dados",
+      data: filteredDataset,
+      backgroundColor: '#00008B',
+    }],
   };
 }
 
-const options = {
-  responsive: true,
-  plugins: {
-    title: {
-      display: true,
-      text: 'Chart.js Bar Chart',
-    },
-  },
-};
-
-export default function Matriz_bar_chart() {
+function Matriz_bar_chart() {
   const [data, setData] = useState(
     {
-      labels: ["Aguardando"], 
-      datasets: [
-        
-      ]
-    }
+      labels: ["Waiting Data"], 
+      datasets: []
+    } 
   );
+  const options = {
+    responsive: true,
+    plugins: {
+      title: {
+        display: true,
+        text: 'Country Energy Matrix',
+      },
+    },
+  };
+
   async function teste() {
     let data1 = await createData()
-    debugger;
     setData(data1)
   }  
   teste();
+
   return (
     <div>
       <Bar options={options} data={data} />
     </div>);
 }
+
+export default Matriz_bar_chart;
