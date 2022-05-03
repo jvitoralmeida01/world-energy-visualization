@@ -3,20 +3,26 @@ import Title from './components/Title'
 import WorldMap from './components/WorldMap'
 import Graphs from './components/Graphs'
 
-import data from "./worldMap.geo.json";
+import mapData from "./worldMap.geo.json";
+import { useState } from 'react'
 
 function App() {
+
+  const setCountries = () => {
+    console.log("coming from Parent!");
+  }
+
   return (
     <div>
 
       <section className="container">
 
         <div className="item-map">
-          <WorldMap data={data}/>
+          <WorldMap data={mapData} setParentCountries={setCountries}/>
         </div>
 
         <div className="item-title">
-          <Title text="World Energy Visualization"/>
+          <Title text={"World Energy Visualization"}/>
         </div>
 
         <div className="item-graphs">

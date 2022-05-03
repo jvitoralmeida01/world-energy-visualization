@@ -1,13 +1,18 @@
 import React, {useRef, useEffect, useState} from "react";
 import {select, geoPath, geoMercator} from 'd3';
+import gsap from 'gsap';
 import useResizeObserver from "../../hooks/useResizeObserver";
+import MapToast from "./mapToast";
 
-export default function WorldMap({ data }){
+export default function WorldMap({ data, setParentCountries }){
 
-    const svgRef = useRef();
     const wrapperRef = useRef();
+    const svgRef = useRef();
+    const alertRef = useRef();
     const dimensions = useResizeObserver(wrapperRef);
-    const [selectedCountry, setSelectedCountry] = useState(null);
+    const [selectedCountryA, setSelectedCountryA] = useState(null);
+    const [selectedCountryB, setSelectedCountryB] = useState(null);
+    const [isAlerting, setIsAlerting] = useState(false);
     const [hoveredCountry, setHoveredCountry] = useState(null);
 
     useEffect(() => {
@@ -15,15 +20,43 @@ export default function WorldMap({ data }){
         const svg = select(svgRef.current);
         svg.attr("width", width).attr("height", height).style("stroke", "black").style("stroke-width", width/2000);
 
-        const projection = geoMercator().fitSize([width, height], selectedCountry || data).precision(100);
+        const projection = geoMercator().fitSize([width, height], data).precision(100);
         const pathFactory = geoPath().projection(projection);
+
+        document.addEventListener("keyup", (event) => {
+          if(event.code === "Escape"){
+            setSelectedCountryA(null);
+            setSelectedCountryB(null);
+          }
+        });
+
+        document.addEventListener("contextmenu", (event) => {
+          event.preventDefault();
+        })
 
         svg
           .selectAll('.country')
           .data(data.features)
           .join('path')
           .on("click", (d, feature) => {	
-            setSelectedCountry(selectedCountry === feature ? null : feature);
+            if(selectedCountryB !== feature){
+              setSelectedCountryA(selectedCountryA === feature ? null : feature);
+              setParentCountries([selectedCountryA, selectedCountryB]);
+            }else{
+              setIsAlerting(true);
+              setTimeout(() => {setIsAlerting(false)}, 500);
+            }
+            
+          })
+          .on("contextmenu", (d, feature) => {
+            if(selectedCountryA !== feature){
+              setSelectedCountryB(selectedCountryB === feature ? null : feature);
+              setParentCountries([selectedCountryA, selectedCountryB]);
+            }else{
+              setIsAlerting(true);
+              setTimeout(() => {setIsAlerting(false)}, 500);
+            }
+            
           })
           .on("mouseover", (d, feature) => {
             setHoveredCountry(feature);
@@ -34,19 +67,28 @@ export default function WorldMap({ data }){
           .attr('class', 'country')
           .transition()
           .attr("fill", feature => {
-              if(hoveredCountry === feature) {
-                    return "cyan";
+              if(selectedCountryA === feature) {
+                return "gold";
+              }else if(selectedCountryB === feature) {
+                return "lime";
+              } else if(hoveredCountry === feature) {
+                return "cyan";
               }else{
-                    return "white";
+                if(selectedCountryA === null && selectedCountryB === null){
+                  return "white";
+                }else{
+                  return "grey";
+                }
               }
           })
           .attr('d', feature => pathFactory(feature));
 
-    }, [data, dimensions, selectedCountry, hoveredCountry]);
+    }, [data, dimensions, selectedCountryA, selectedCountryB, hoveredCountry]);
 
     return(
         <div ref={wrapperRef} className="map-wrapper">
-            <svg ref={svgRef}></svg>
+          <MapToast alert={isAlerting}></MapToast>
+          <svg ref={svgRef}></svg>
         </div>
     );
 }
