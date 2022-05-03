@@ -1,14 +1,10 @@
-import React, { useState, useRef, useEffect } from "react";
-
+import React from "react";
+import Matriz_bar_chart from "../Country_Energy_Matrix_Bar";
 
 export default function Graphs(){
-
-    const [data] = useState([25, 50, 35, 15, 94, 10]);
-    const svgRef = useRef();
-
     return (
         <div className="graph-wrapper">
-            <svg ref={svgRef}/>
+            <Matriz_bar_chart />
         </div>
     );
 }
