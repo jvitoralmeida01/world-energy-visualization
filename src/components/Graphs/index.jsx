@@ -1,5 +1,6 @@
 import React, {useEffect, useState, useRef}  from "react";
 import CountryEnergyMatrixBar from "../CountryEnergyMatrixBar";
+import CountryEnergyMatrixPie from "../CountryEnergyMatrixPie";
 import DataGrabber from "../../utils/dataGrabber.mjs";
 import {
   Chart as ChartJS,
@@ -40,6 +41,7 @@ export default function Graphs(){
   return (
     <div className="graph-wrapper">
       <CountryEnergyMatrixBar dataset ={data} />    
+      <CountryEnergyMatrixPie dataset ={data} />
     </div>
   );
 }
