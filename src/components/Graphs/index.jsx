@@ -1,6 +1,6 @@
 import React, {useEffect, useState, useRef}  from "react";
-import CountryEnergyMatrixBar from "../CountryEnergyMatrixBar";
-import CountryEnergyMatrixPie from "../CountryEnergyMatrixPie";
+import EnergyMatrixBar from "../EnergyMatrixBar";
+import EnergyMatrixPie from "../EnergyMatrixPie";
 import DataGrabber from "../../utils/dataGrabber.mjs";
 import {
   Chart as ChartJS,
@@ -40,8 +40,8 @@ export default function Graphs(){
 
   return (
     <div className="graph-wrapper">
-      <CountryEnergyMatrixBar dataset ={data} />    
-      <CountryEnergyMatrixPie dataset ={data} />
+      <EnergyMatrixBar dataset ={data} />    
+      <EnergyMatrixPie dataset ={data} />
     </div>
   );
 }
