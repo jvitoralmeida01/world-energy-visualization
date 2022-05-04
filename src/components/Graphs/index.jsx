@@ -10,7 +10,6 @@ import {
   Tooltip,
   Legend,
 } from 'chart.js';
-import { Bar } from 'react-chartjs-2';
 
 ChartJS.register(
   CategoryScale,
@@ -25,37 +24,14 @@ async function createData(country){
   let rawDataset = await DataGrabber.fetchDataset("https://raw.githubusercontent.com/owid/energy-data/master/owid-energy-data.csv");
   let filteredDataset = DataGrabber.filterDataset(rawDataset, country);
 
-  return {
-    labels: ["Biofuel", "Coal", "Gas", "Hydro", "Nuclear", "Oil", "Solar", "Wind"],
-    datasets: [{
-      label: "Array de Dados",
-      data: filteredDataset,
-      backgroundColor: 'cyan',
-    }],
-  };
+  return filteredDataset;
 }
 
 export default function Graphs(){
 
   const [country, setCountry] = useState("Brazil");
   
-  const [data, setData] = useState(
-    {
-      labels: ["Waiting Data"], 
-      datasets: []
-    } 
-  );
-  
-  const options = {
-    responsive: true,
-    plugins: {
-      title: {
-        color: '#fff',
-        display: true,
-        text: 'Country Energy Matrix',
-      },
-    },
-  };
+  const [data, setData] = useState([]);
   
   useEffect(() => {
     createData(country).then(data => setData(data));
@@ -63,7 +39,7 @@ export default function Graphs(){
 
   return (
     <div className="graph-wrapper">
-      <CountryEnergyMatrixBar data={data} options={options}/>     
+      <CountryEnergyMatrixBar dataset ={data} />    
     </div>
   );
 }
