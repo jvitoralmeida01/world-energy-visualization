@@ -1,6 +1,7 @@
 import React, {useEffect, useState, useRef}  from "react";
 import EnergyMatrixBar from "../EnergyMatrixBar";
 import EnergyMatrixPie from "../EnergyMatrixPie";
+import EnergyMatrixGroupedBar from "../EnergyMatrixGroupedBar";
 import DataGrabber from "../../utils/dataGrabber.mjs";
 import {
   Chart as ChartJS,
@@ -31,7 +32,6 @@ async function createData(country){
 export default function Graphs(){
 
   const [country, setCountry] = useState("Brazil");
-  
   const [data, setData] = useState([]);
   
   useEffect(() => {
@@ -42,6 +42,7 @@ export default function Graphs(){
     <div className="graph-wrapper">
       <EnergyMatrixBar dataset ={data} />    
       <EnergyMatrixPie dataset ={data} />
+      <EnergyMatrixGroupedBar countryNameOne = {country} datasetCountryOne={data} countryNameTwo = {country} datasetCountryTwo={data}/>
     </div>
   );
 }
