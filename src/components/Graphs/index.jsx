@@ -2,6 +2,7 @@ import React, {useEffect, useState, useRef}  from "react";
 import EnergyMatrixBar from "../EnergyMatrixBar";
 import EnergyMatrixPie from "../EnergyMatrixPie";
 import EnergyMatrixGroupedBar from "../EnergyMatrixGroupedBar";
+import EnergyMatrixStackedBar from "../EnergyMatrixStackedBar"
 import DataGrabber from "../../utils/dataGrabber.mjs";
 import {
   Chart as ChartJS,
@@ -43,6 +44,8 @@ export default function Graphs(){
       <EnergyMatrixBar dataset ={data} />    
       <EnergyMatrixPie dataset ={data} />
       <EnergyMatrixGroupedBar countryNameOne = {country} datasetCountryOne={data} countryNameTwo = {country} datasetCountryTwo={data}/>
+      <EnergyMatrixStackedBar dataset={data} labels={["2000", "2001", "2002"]}/> {/*Historical*/}
+      <EnergyMatrixStackedBar dataset={data} labels={[country, country]}/> {/*Country Comparation*/}
     </div>
   );
 }
