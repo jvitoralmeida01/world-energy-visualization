@@ -30,7 +30,8 @@ async function createData(country){
 export default function Graphs(){
 
   const [country, setCountry] = useState("Brazil");
-  
+  const [qtdCountry, setQtdCountry] = useState("One") //One or Two
+  const [typeSearch, setTypeSearch] = useState("Year"); //Year or History
   const [data, setData] = useState([]);
   
   useEffect(() => {
@@ -39,7 +40,40 @@ export default function Graphs(){
 
   return (
     <div className="graph-wrapper">
-      <CountryEnergyMatrixBar dataset ={data} />    
+      <button onClick={function () {
+        if (typeSearch == "Year")
+          setTypeSearch("History")
+        else
+          setTypeSearch("Year")
+        }}>Change Qtd Country</button>
+        
+      <button onClick={function () {
+        if (qtdCountry == "One")
+          setQtdCountry("Two")
+        else
+          setQtdCountry("One")
+        }
+      }>Change Type Search</button> 
+
+      {typeSearch == "Year" && qtdCountry == "One"
+      ? <div>
+          <CountryEnergyMatrixBar dataset ={data} />   
+          <p>PieChart</p>
+       </div>
+      :typeSearch == "Year" && qtdCountry == "Two"
+      ? <div>
+          <p>GroupedBarChart</p> 
+          <p>StackedBarChart (two countries)</p>
+       </div>
+       :typeSearch == "History" && qtdCountry == "One"
+       ? <div>
+           <p>StackedHistoricalBarChart (one countrie)</p>
+        </div>
+      :<div>
+          <p>StackedHistoricalBarChart (one countrie)</p>
+          <p>StackedHistoricalBarChart (one countrie)</p>
+       </div>
+      }
     </div>
   );
 }
