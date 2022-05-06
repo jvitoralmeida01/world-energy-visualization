@@ -60,17 +60,39 @@ export default function EnergyMatrixStackedBar({dataset, labels}){
     indexAxis: 'y',
     responsive: true,
     plugins: {
+      legend: {
+        position: 'right',
+        labels:{
+          color: '#fff'
+        }
+      },
       title: {
         color: '#fff',
         display: true,
         text: 'Country Energy Matrix',
+        padding: {
+          top: 15,
+          bottom: 5,
+        },
+        font:{
+          size: '14',
+          style: 'bold'
+        },
       },
     },
     scales:{
       y:{
+        ticks:{
+          color: "#ddd",
+        },
         stacked: true,
       },
-    }
+      x:{
+        ticks: {
+          color: '#ddd',
+        }
+      },
+    },
   };
 
   return (
