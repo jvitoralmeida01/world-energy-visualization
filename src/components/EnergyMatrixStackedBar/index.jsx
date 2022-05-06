@@ -76,7 +76,6 @@ export default function EnergyMatrixStackedBar({dataset, labels, countryName}){
         },
         font:{
           size: '14',
-          style: 'bold'
         },
       },
     },
@@ -86,10 +85,16 @@ export default function EnergyMatrixStackedBar({dataset, labels, countryName}){
           color: "#ddd",
         },
         stacked: true,
+        grid:{
+          color: "#555"
+        }
       },
       x:{
         ticks: {
           color: '#ddd',
+        },
+        grid:{
+          color: "#555"
         }
       },
     },
