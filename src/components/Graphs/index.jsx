@@ -2,6 +2,7 @@ import React, {useEffect, useState, useRef}  from "react";
 import EnergyMatrixBar from "../EnergyMatrixBar";
 import EnergyMatrixPie from "../EnergyMatrixPie";
 import EnergyMatrixGroupedBar from "../EnergyMatrixGroupedBar";
+import EnergyMatrixStackedBar from "../EnergyMatrixStackedBar"
 import DataGrabber from "../../utils/dataGrabber.mjs";
 import {
   Chart as ChartJS,
@@ -47,7 +48,7 @@ export default function Graphs(){
           setTypeSearch("History")
         else
           setTypeSearch("Year")
-        }}>Change Qtd Country</button>
+        }}>Change Type Search</button>
         
       <button onClick={function () {
         if (qtdCountry == "One")
@@ -55,7 +56,7 @@ export default function Graphs(){
         else
           setQtdCountry("One")
         }
-      }>Change Type Search</button> 
+      }>Change Qtd Country</button> 
 
       {typeSearch == "Year" && qtdCountry == "One"
       ? <div>
@@ -65,15 +66,15 @@ export default function Graphs(){
       :typeSearch == "Year" && qtdCountry == "Two"
       ? <div>
           <EnergyMatrixGroupedBar countryNameOne = {country} datasetCountryOne={data} countryNameTwo = {country} datasetCountryTwo={data}/>
-          <p>StackedBarChart (two countries)</p>
+          <EnergyMatrixStackedBar dataset={data} labels={[country, country]} countryName={country}/> {/*Country Comparation*/}
        </div>
        :typeSearch == "History" && qtdCountry == "One"
        ? <div>
-           <p>StackedHistoricalBarChart (one countrie)</p>
+           <EnergyMatrixStackedBar dataset={data} labels={["2000", "2001", "2002"]} countryName={country}/> {/*Historical*/}
         </div>
       :<div>
-          <p>StackedHistoricalBarChart (one countrie)</p>
-          <p>StackedHistoricalBarChart (one countrie)</p>
+          <EnergyMatrixStackedBar dataset={data} labels={["2000", "2001", "2002"]} countryName={country}/> {/*Historical*/}
+          <EnergyMatrixStackedBar dataset={data} labels={["2000", "2001", "2002"]} countryName={country}/> {/*Historical*/}
        </div>
       }
     </div>
