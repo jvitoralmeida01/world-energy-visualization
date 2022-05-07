@@ -83,10 +83,27 @@ export default function CountryEnergyMatrixPie({dataset}) {
             label: 'Percentage of Production',
             data: finalDataset,
             backgroundColor: finalColors,
-            borderColor: 'white',
+            borderColor: '#ddd',
             borderWidth: 1,
             },
         ],
     };
-    return <Pie data={data} />;
+
+    const options = {
+      responsive: true,
+      plugins: {
+        legend:{
+        position: 'right',
+          title:{
+            color: '#fff',
+            display: true,
+            font: {weight: '600'},
+            text: 'Energy source:',
+          },
+          labels:{color: '#fff'}
+        },
+      },
+    };
+
+    return <Pie data={data} options={options} />;
 }
