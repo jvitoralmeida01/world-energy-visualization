@@ -1,6 +1,7 @@
 import React, {useEffect, useState, useRef}  from "react";
-import CountryEnergyMatrixBar from "../CountryEnergyMatrixBar";
-import CountryEnergyMatrixPie from "../CountryEnergyMatrixPie";
+import EnergyMatrixBar from "../EnergyMatrixBar";
+import EnergyMatrixPie from "../EnergyMatrixPie";
+import EnergyMatrixGroupedBar from "../EnergyMatrixGroupedBar";
 import DataGrabber from "../../utils/dataGrabber.mjs";
 import {
   Chart as ChartJS,
@@ -58,12 +59,12 @@ export default function Graphs(){
 
       {typeSearch == "Year" && qtdCountry == "One"
       ? <div>
-          <CountryEnergyMatrixBar dataset ={data} />  
-          <CountryEnergyMatrixPie dataset ={data} />
+          <EnergyMatrixBar dataset ={data} />  
+          <EnergyMatrixPie dataset ={data} />
        </div>
       :typeSearch == "Year" && qtdCountry == "Two"
       ? <div>
-          <p>GroupedBarChart</p> 
+          <EnergyMatrixGroupedBar countryNameOne = {country} datasetCountryOne={data} countryNameTwo = {country} datasetCountryTwo={data}/>
           <p>StackedBarChart (two countries)</p>
        </div>
        :typeSearch == "History" && qtdCountry == "One"

@@ -25,7 +25,7 @@ let colors = [
     'Pink',
 ];
 
-export default function CountryEnergyMatrixPie({dataset}) {
+export default function EnergyMatrixPie({dataset}) {
     //extract the four highest values ​​and merge  remaining into "Other"
     //return dataset and their colors and labels
     function puttingInFiveSets(){
