@@ -1,5 +1,6 @@
 import React, {useEffect, useState, useRef}  from "react";
 import CountryEnergyMatrixBar from "../CountryEnergyMatrixBar";
+import CountryEnergyMatrixPie from "../CountryEnergyMatrixPie";
 import DataGrabber from "../../utils/dataGrabber.mjs";
 import {
   Chart as ChartJS,
@@ -57,8 +58,8 @@ export default function Graphs(){
 
       {typeSearch == "Year" && qtdCountry == "One"
       ? <div>
-          <CountryEnergyMatrixBar dataset ={data} />   
-          <p>PieChart</p>
+          <CountryEnergyMatrixBar dataset ={data} />  
+          <CountryEnergyMatrixPie dataset ={data} />
        </div>
       :typeSearch == "Year" && qtdCountry == "Two"
       ? <div>
