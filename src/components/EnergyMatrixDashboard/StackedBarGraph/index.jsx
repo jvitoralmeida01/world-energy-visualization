@@ -1,7 +1,7 @@
 import React from "react";
 import { Bar } from 'react-chartjs-2';
 
-export default function EnergyMatrixStackedBar({dataset, labels, countryName}){
+export default function StackedBarGraph({dataset, labels, countryName}){
   let data = {
     labels: labels,
     datasets: [

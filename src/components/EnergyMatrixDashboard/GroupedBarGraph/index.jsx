@@ -1,7 +1,7 @@
 import React from "react";
 import { Bar } from 'react-chartjs-2';
 
-export default function EnergyMatrixGroupedBar({countryNameOne, datasetCountryOne, countryNameTwo, datasetCountryTwo}){
+export default function GroupedBarGraph({countryNameOne, datasetCountryOne, countryNameTwo, datasetCountryTwo}){
     let data = {
         labels: ["Biofuel", "Coal", "Gas", "Hydro", "Nuclear", "Oil", "Solar", "Wind"],
         datasets: [

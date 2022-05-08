@@ -1,7 +1,7 @@
 import React from 'react';
 import { Bar } from 'react-chartjs-2';
 
-export default function EnergyMatrixBar({dataset}) {
+export default function BarGraph({dataset}) {
   let data = {
     labels: ["Biofuel", "Coal", "Gas", "Hydro", "Nuclear", "Oil", "Solar", "Wind"],
     datasets: [{
