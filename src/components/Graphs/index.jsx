@@ -4,6 +4,8 @@ import PieGraph from "../EnergyMatrixDashboard/PieGraph";
 import GroupedBarGraph from "../EnergyMatrixDashboard/GroupedBarGraph";
 import StackedBarGraph from "../EnergyMatrixDashboard/StackedBarGraph";
 import DataGrabber from "../../utils/dataGrabber.mjs";
+import datasetFilter from "../../utils/datasetFilter.mjs";
+
 import {
   Chart as ChartJS,
   CategoryScale,
@@ -25,7 +27,7 @@ ChartJS.register(
 
 async function createData(country){
   let rawDataset = await DataGrabber.fetchDataset("https://raw.githubusercontent.com/owid/energy-data/master/owid-energy-data.csv");
-  let filteredDataset = DataGrabber.filterDataset(rawDataset, country);
+  let filteredDataset = datasetFilter.filterDataset(rawDataset, country);
 
   return filteredDataset;
 }
