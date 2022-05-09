@@ -26,8 +26,13 @@ ChartJS.register(
 );
 
 async function createData(country){
+  let labels = ["biofuel_share_elec", "coal_share_elec", "gas_share_elec", "hydro_share_elec", "nuclear_share_elec",
+    "oil_share_elec", "solar_share_elec", "wind_share_elec"];
+
   let rawDataset = await DataGrabber.fetchDataset("https://raw.githubusercontent.com/owid/energy-data/master/owid-energy-data.csv");
-  let filteredDataset = datasetFilter.filterDataset(rawDataset, country);
+  let filteredDataset = datasetFilter.filterByCountry(rawDataset, country);
+  filteredDataset = datasetFilter.filterByYear(filteredDataset, [2000, 2000]);
+  filteredDataset = datasetFilter.filterByLabels(filteredDataset, labels);
 
   return filteredDataset;
 }
