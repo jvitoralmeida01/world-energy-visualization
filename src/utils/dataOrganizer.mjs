@@ -46,4 +46,21 @@ export default class dataOrganizer{
         
         return [finalDataset, finalLabels, finalColors];
     }
+    
+    //Create N arrays, each one per label, with all values of this label
+    static arrayForEachLabel(dataset, qtdLabels){
+        let unifiedArray = [];
+        let repeticoes = dataset.length/qtdLabels;
+        let indexInicial = 0;
+        while (indexInicial < qtdLabels){//VAI RODAR 8 VEZES
+            let actualArray = [];
+            for(let j = 0; j < repeticoes; j++){
+                actualArray.push(dataset[indexInicial + j*qtdLabels]);
+            }
+            unifiedArray.push(actualArray);
+            indexInicial++;
+        }
+
+        return unifiedArray;
+    }
 }

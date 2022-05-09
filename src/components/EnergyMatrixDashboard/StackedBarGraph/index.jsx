@@ -7,49 +7,49 @@ export default function StackedBarGraph({dataset, labels, countryName}){
     datasets: [
     {
       label: "Biofuel",
-      data: [dataset[0]],
+      data: dataset[0],
       backgroundColor: 'Green',
       stack: 'Stack 0'
     },
     {
       label: "Coal",
-      data: [dataset[1]],
+      data: dataset[1],
       backgroundColor: 'Red',
       stack: 'Stack 0'
     },
     {
       label: "Gas",
-      data: [dataset[2]],
+      data: dataset[2],
       backgroundColor: 'Orange',
       stack: 'Stack 0'
     },
     {
       label: "Hydro",
-      data: [dataset[3]],
+      data: dataset[3],
       backgroundColor: 'Cyan',
       stack: 'Stack 0'
     },
     {
       label: "Nuclear",
-      data: [dataset[4]],
+      data: dataset[4],
       backgroundColor: 'Purple',
       stack: 'Stack 0'
     },
     {
       label: "Oil",
-      data: [dataset[5]],
+      data: dataset[5],
       backgroundColor:'Black',
       stack: 'Stack 0'
     },
     {
       label: "Solar",
-      data: [dataset[6]],
+      data: dataset[6],
       backgroundColor:'Yellow',
       stack: 'Stack 0'
     },
     {
       label: "Wind",
-      data: [dataset[7]],
+      data: dataset[7],
       backgroundColor: 'Pink',
       stack: 'Stack 0'
     }

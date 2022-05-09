@@ -5,6 +5,7 @@ import GroupedBarGraph from "../EnergyMatrixDashboard/GroupedBarGraph";
 import StackedBarGraph from "../EnergyMatrixDashboard/StackedBarGraph";
 import DataGrabber from "../../utils/dataGrabber.mjs";
 import datasetFilter from "../../utils/datasetFilter.mjs";
+import dataOrganizer from "../../utils/dataOrganizer.mjs";
 
 import {
   Chart as ChartJS,
@@ -31,7 +32,7 @@ async function createData(country){
 
   let rawDataset = await DataGrabber.fetchDataset("https://raw.githubusercontent.com/owid/energy-data/master/owid-energy-data.csv");
   let filteredDataset = datasetFilter.filterByCountry(rawDataset, country);
-  filteredDataset = datasetFilter.filterByYear(filteredDataset, [2000, 2000]);
+  filteredDataset = datasetFilter.filterByYear(filteredDataset, [2000, 2002]);
   filteredDataset = datasetFilter.filterByLabels(filteredDataset, labels);
 
   return filteredDataset;
@@ -77,11 +78,11 @@ export default function Graphs(){
        </div>
        :typeSearch == "History" && qtdCountry == "One"
        ? <div>
-           <StackedBarGraph dataset={data} labels={["2000", "2001", "2002"]} countryName={country}/> {/*Historical*/}
+           <StackedBarGraph dataset={dataOrganizer.arrayForEachLabel(data, 8)} labels={["2000", "2001", "2002"]} countryName={country}/> {/*Historical*/}
         </div>
       :<div>
-          <StackedBarGraph dataset={data} labels={["2000", "2001", "2002"]} countryName={country}/> {/*Historical*/}
-          <StackedBarGraph dataset={data} labels={["2000", "2001", "2002"]} countryName={country}/> {/*Historical*/}
+          <StackedBarGraph dataset={dataOrganizer.arrayForEachLabel(data, 8)} labels={["2000", "2001", "2002"]} countryName={country}/> {/*Historical*/}
+          <StackedBarGraph dataset={dataOrganizer.arrayForEachLabel(data, 8)} labels={["2000", "2001", "2002"]} countryName={country}/> {/*Historical*/}
        </div>
       }
     </div>
