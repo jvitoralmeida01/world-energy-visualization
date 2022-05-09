@@ -19,11 +19,13 @@ export default class datasetFilter {
     //Filter dataset with given labels 
     static filterByLabels(dataset, labels){
         let wantedData = [];
-        for (let i = 0; i < labels.length; i++){
-            let column = labels[i];
-            wantedData.push(dataset[0][column])
+        for (let i = 0; i < dataset.length; i++){
+            for (let j = 0; j < labels.length; j++){
+                let column = labels[j];
+                wantedData.push(dataset[i][column])
+            }
         }
         return wantedData;
     }
-
+    
 }
