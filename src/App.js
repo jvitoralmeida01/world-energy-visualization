@@ -4,13 +4,16 @@ import WorldMap from './components/WorldMap'
 import Graphs from './components/Graphs'
 
 import mapData from "./worldMap.geo.json";
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 
 function App() {
 
-  const setCountries = () => {
-    console.log("coming from Parent!");
-  }
+  const [countries, setCountries] = useState([,]);
+
+  useEffect(() => {
+    console.log(countries);
+  }, [countries]);
+  
 
   return (
     <div>
@@ -26,7 +29,13 @@ function App() {
         </div>
 
         <div className="item-graphs">
-          <Graphs />
+          <Graphs countryOne={
+            countries[0] != undefined ? countries[0].properties.name : ""
+          } countryTwo={
+            countries[1] != undefined ? countries[1].properties.name : ""
+          } yearRange={
+            [2000, 2000]
+          } />
         </div>
 
       </section>

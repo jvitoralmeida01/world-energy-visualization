@@ -38,56 +38,47 @@ async function createData(country, yearRange){
   return filteredDataset;
 }
 
-export default function Graphs(){
+export default function Graphs({countryOne, countryTwo, yearRange}){
 
-  const [countryOne, setCountryOne] = useState("Brazil");
-  const [countryTwo, setCountryTwo] = useState("Argentina");
-  const [yearRange, setYearRange] = useState([2000,2000]);
-  const [qtdCountry, setQtdCountry] = useState("One") //One or Two
+  const [isDoubleCountry, setIsDoubleCountry] = useState(false) //One or Two
   const [typeSearch, setTypeSearch] = useState("Year"); //Year or History
   const [dataOne, setDataOne] = useState([]);
   const [dataTwo, setDataTwo] = useState([]);
   
   useEffect(() => {
-    createData(countryOne, yearRange).then(data => setDataOne(data));
+    if (countryOne != ""){
+      createData(countryOne, yearRange).then(data => setDataOne(data));
+    }
   }, [countryOne]);
 
+  console.log(countryTwo);
   useEffect(() => {
-    createData(countryTwo, yearRange).then(data => setDataTwo(data));
+    if(countryTwo != ""){
+      createData(countryTwo, yearRange).then(data => setDataTwo(data));
+      setIsDoubleCountry(true);
+    }else{
+      setIsDoubleCountry(false);
+    }
   }, [countryTwo]);
 
   return (
     <div className="graph-wrapper">
-      <button onClick={function () {
-        if (typeSearch == "Year")
-          setTypeSearch("History")
-        else
-          setTypeSearch("Year")
-        }}>Change Type Search</button>
-        
-      <button onClick={function () {
-        if (qtdCountry == "One")
-          setQtdCountry("Two")
-        else
-          setQtdCountry("One")
-        }
-      }>Change Qtd Country</button> 
 
-      {typeSearch == "Year" && qtdCountry == "One"
+      {typeSearch == "Year" && !isDoubleCountry //Year, One
       ? <div>
           <BarGraph dataset ={dataOne} />  
           <PieGraph dataset ={dataOne} />
        </div>
-      :typeSearch == "Year" && qtdCountry == "Two"
+      :typeSearch == "Year" && isDoubleCountry //Year, Two
       ? <div>
           <GroupedBarGraph countryNameOne = {countryOne} datasetCountryOne={dataOne} countryNameTwo = {countryTwo} datasetCountryTwo={dataTwo}/>
           <StackedBarGraph dataset={dataOrganizer.arrayForEachLabel(dataOne.concat(dataTwo), 8)} labels={[countryOne, countryTwo]}/> {/*Country Comparation*/}
        </div>
-       :typeSearch == "History" && qtdCountry == "One"
+       :typeSearch == "History" && !isDoubleCountry //History, One
        ? <div>
            <StackedBarGraph dataset={dataOrganizer.arrayForEachLabel(dataOne, 8)} labels={yearRange} countryName={countryOne}/> {/*Historical*/}
         </div>
-      :<div>
+      :<div> {/*History, Two*/}
           <StackedBarGraph dataset={dataOrganizer.arrayForEachLabel(dataOne, 8)} labels={yearRange} countryName={countryOne}/> {/*Historical*/}
           <StackedBarGraph dataset={dataOrganizer.arrayForEachLabel(dataTwo, 8)} labels={yearRange} countryName={countryTwo}/> {/*Historical*/}
        </div>
