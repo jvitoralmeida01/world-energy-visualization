@@ -2,8 +2,19 @@ import React from "react";
 import { Bar } from 'react-chartjs-2';
 
 export default function StackedBarGraph({dataset, labels, countryName}){
+  let FinalLabels;
+
+  if (countryName == undefined){
+    FinalLabels = labels;
+  }else{
+    let initValue = labels[0];
+    let endValue = labels[1];
+    let yearRange = endValue - initValue;
+    FinalLabels = [...Array(yearRange+1).keys()].map(i => i + initValue);
+  }
+
   let data = {
-    labels: labels,
+    labels: FinalLabels,
     datasets: [
     {
       label: "Biofuel",
