@@ -1,59 +1,31 @@
 import React from "react";
 import { Bar } from 'react-chartjs-2';
 
+function createDatasets(dataset){
+  let finalDataset = [];
+  let labels = ["Biofuel", "Coal", "Gas", "Hydro", "Nuclear", "Oil", "Solar", "Wind"];
+  let backgroundColor = ['Green', 'Red', 'Orange', 'Cyan', 'Purple', 'Black', 'Yellow', 'Pink'];
+
+  for (let i = 0; i < 8; i++){
+    finalDataset.push(
+      {
+      label: labels[i],
+      data: dataset[i],
+      backgroundColor: backgroundColor[i],
+      stack: 'Stack 0',
+      }
+    );
+  }
+  console.log (finalDataset);
+  return finalDataset
+}
+
 export default function StackedBarGraph({dataset, labels, countryName}){
+  let finalDataset = createDatasets(dataset)
+
   let data = {
     labels: labels,
-    datasets: [
-    {
-      label: "Biofuel",
-      data: [dataset[0]],
-      backgroundColor: 'Green',
-      stack: 'Stack 0'
-    },
-    {
-      label: "Coal",
-      data: [dataset[1]],
-      backgroundColor: 'Red',
-      stack: 'Stack 0'
-    },
-    {
-      label: "Gas",
-      data: [dataset[2]],
-      backgroundColor: 'Orange',
-      stack: 'Stack 0'
-    },
-    {
-      label: "Hydro",
-      data: [dataset[3]],
-      backgroundColor: 'Cyan',
-      stack: 'Stack 0'
-    },
-    {
-      label: "Nuclear",
-      data: [dataset[4]],
-      backgroundColor: 'Purple',
-      stack: 'Stack 0'
-    },
-    {
-      label: "Oil",
-      data: [dataset[5]],
-      backgroundColor:'Black',
-      stack: 'Stack 0'
-    },
-    {
-      label: "Solar",
-      data: [dataset[6]],
-      backgroundColor:'Yellow',
-      stack: 'Stack 0'
-    },
-    {
-      label: "Wind",
-      data: [dataset[7]],
-      backgroundColor: 'Pink',
-      stack: 'Stack 0'
-    }
-  ],
+    datasets: finalDataset
   };
   
   const options = {
