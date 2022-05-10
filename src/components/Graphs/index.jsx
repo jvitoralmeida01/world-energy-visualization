@@ -4,6 +4,9 @@ import PieGraph from "../EnergyMatrixDashboard/PieGraph";
 import GroupedBarGraph from "../EnergyMatrixDashboard/GroupedBarGraph";
 import StackedBarGraph from "../EnergyMatrixDashboard/StackedBarGraph";
 import DataGrabber from "../../utils/dataGrabber.mjs";
+import datasetFilter from "../../utils/datasetFilter.mjs";
+import dataOrganizer from "../../utils/dataOrganizer.mjs";
+
 import {
   Chart as ChartJS,
   CategoryScale,
@@ -23,23 +26,35 @@ ChartJS.register(
   Legend
 );
 
-async function createData(country){
+async function createData(country, yearRange){
+  let labels = ["biofuel_share_elec", "coal_share_elec", "gas_share_elec", "hydro_share_elec", "nuclear_share_elec",
+    "oil_share_elec", "solar_share_elec", "wind_share_elec"];
+
   let rawDataset = await DataGrabber.fetchDataset("https://raw.githubusercontent.com/owid/energy-data/master/owid-energy-data.csv");
-  let filteredDataset = DataGrabber.filterDataset(rawDataset, country);
+  let filteredDataset = datasetFilter.filterByCountry(rawDataset, country);
+  filteredDataset = datasetFilter.filterByYear(filteredDataset, yearRange);
+  filteredDataset = datasetFilter.filterByLabels(filteredDataset, labels);
 
   return filteredDataset;
 }
 
 export default function Graphs(){
 
-  const [country, setCountry] = useState("Brazil");
+  const [countryOne, setCountryOne] = useState("Brazil");
+  const [countryTwo, setCountryTwo] = useState("Argentina");
+  const [yearRange, setYearRange] = useState([2000,2000]);
   const [qtdCountry, setQtdCountry] = useState("One") //One or Two
   const [typeSearch, setTypeSearch] = useState("Year"); //Year or History
-  const [data, setData] = useState([]);
+  const [dataOne, setDataOne] = useState([]);
+  const [dataTwo, setDataTwo] = useState([]);
   
   useEffect(() => {
-    createData(country).then(data => setData(data));
-  }, [country]);
+    createData(countryOne, yearRange).then(data => setDataOne(data));
+  }, [countryOne]);
+
+  useEffect(() => {
+    createData(countryTwo, yearRange).then(data => setDataTwo(data));
+  }, [countryTwo]);
 
   return (
     <div className="graph-wrapper">
@@ -60,21 +75,21 @@ export default function Graphs(){
 
       {typeSearch == "Year" && qtdCountry == "One"
       ? <div>
-          <BarGraph dataset ={data} />  
-          <PieGraph dataset ={data} />
+          <BarGraph dataset ={dataOne} />  
+          <PieGraph dataset ={dataOne} />
        </div>
       :typeSearch == "Year" && qtdCountry == "Two"
       ? <div>
-          <GroupedBarGraph countryNameOne = {country} datasetCountryOne={data} countryNameTwo = {country} datasetCountryTwo={data}/>
-          <StackedBarGraph dataset={data} labels={[country, country]} countryName={country}/> {/*Country Comparation*/}
+          <GroupedBarGraph countryNameOne = {countryOne} datasetCountryOne={dataOne} countryNameTwo = {countryTwo} datasetCountryTwo={dataTwo}/>
+          <StackedBarGraph dataset={dataOrganizer.arrayForEachLabel(dataOne.concat(dataTwo), 8)} labels={[countryOne, countryTwo]}/> {/*Country Comparation*/}
        </div>
        :typeSearch == "History" && qtdCountry == "One"
        ? <div>
-           <StackedBarGraph dataset={data} labels={["2000", "2001", "2002"]} countryName={country}/> {/*Historical*/}
+           <StackedBarGraph dataset={dataOrganizer.arrayForEachLabel(dataOne, 8)} labels={yearRange} countryName={countryOne}/> {/*Historical*/}
         </div>
       :<div>
-          <StackedBarGraph dataset={data} labels={["2000", "2001", "2002"]} countryName={country}/> {/*Historical*/}
-          <StackedBarGraph dataset={data} labels={["2000", "2001", "2002"]} countryName={country}/> {/*Historical*/}
+          <StackedBarGraph dataset={dataOrganizer.arrayForEachLabel(dataOne, 8)} labels={yearRange} countryName={countryOne}/> {/*Historical*/}
+          <StackedBarGraph dataset={dataOrganizer.arrayForEachLabel(dataTwo, 8)} labels={yearRange} countryName={countryTwo}/> {/*Historical*/}
        </div>
       }
     </div>
