@@ -14,14 +14,39 @@ export default function BarGraph({dataset}) {
   const options = {
     responsive: true,
     plugins: {
-      title: {
-        color: '#fff',
-        display: true,
-        text: 'Country Energy Matrix',
+      legend: {
+        display: false,
       },
-      text:{
-        color: '#fff'
-      }
+      title: {
+        display: true,
+        color: '#fff',
+        text: 'Country Energy Matrix',
+        padding: {
+          top: 15,
+          bottom: 5,
+        },
+        font:{
+          size: '14',
+        },
+      },
+    },
+    scales:{
+      y:{
+        ticks:{
+          color: "#ddd",
+        },
+        grid:{
+          color: "#555"
+        }
+      },
+      x:{
+        ticks: {
+          color: '#ddd',
+        },
+        grid:{
+          color: "#555"
+        }
+      },
     },
   };
 
