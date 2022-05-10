@@ -42,7 +42,7 @@ export default function Graphs(){
 
   const [countryOne, setCountryOne] = useState("Brazil");
   const [countryTwo, setCountryTwo] = useState("Argentina");
-  const [yearRange, setYearRange] = useState([2021,2021]);
+  const [yearRange, setYearRange] = useState([2000,2000]);
   const [qtdCountry, setQtdCountry] = useState("One") //One or Two
   const [typeSearch, setTypeSearch] = useState("Year"); //Year or History
   const [dataOne, setDataOne] = useState([]);
@@ -81,7 +81,7 @@ export default function Graphs(){
       :typeSearch == "Year" && qtdCountry == "Two"
       ? <div>
           <GroupedBarGraph countryNameOne = {countryOne} datasetCountryOne={dataOne} countryNameTwo = {countryTwo} datasetCountryTwo={dataTwo}/>
-          <StackedBarGraph dataset={dataOne} labels={[countryOne, countryTwo]}/> {/*Country Comparation*/}
+          <StackedBarGraph dataset={dataOrganizer.arrayForEachLabel(dataOne.concat(dataTwo), 8)} labels={[countryOne, countryTwo]}/> {/*Country Comparation*/}
        </div>
        :typeSearch == "History" && qtdCountry == "One"
        ? <div>
