@@ -48,6 +48,8 @@ export default function Graphs({countryOne, countryTwo, yearRange}){
   useEffect(() => {
     if (countryOne != ""){
       createData(countryOne, yearRange).then(data => setDataOne(data));
+    }else{
+      setDataOne([]);
     }
   }, [countryOne]);
 
@@ -57,6 +59,7 @@ export default function Graphs({countryOne, countryTwo, yearRange}){
       createData(countryTwo, yearRange).then(data => setDataTwo(data));
       setIsDoubleCountry(true);
     }else{
+      setDataTwo([]);
       setIsDoubleCountry(false);
     }
   }, [countryTwo]);

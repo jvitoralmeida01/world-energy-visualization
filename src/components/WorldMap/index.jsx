@@ -41,7 +41,6 @@ export default function WorldMap({ data, setParentCountries }){
           .on("click", (d, feature) => {	
             if(selectedCountryB !== feature){
               setSelectedCountryA(selectedCountryA === feature ? null : feature);
-              setParentCountries([selectedCountryA, selectedCountryB]);
             }else{
               setIsAlerting(true);
               setTimeout(() => {setIsAlerting(false)}, 500);
@@ -51,7 +50,6 @@ export default function WorldMap({ data, setParentCountries }){
           .on("contextmenu", (d, feature) => {
             if(selectedCountryA !== feature){
               setSelectedCountryB(selectedCountryB === feature ? null : feature);
-              setParentCountries([selectedCountryA, selectedCountryB]);
             }else{
               setIsAlerting(true);
               setTimeout(() => {setIsAlerting(false)}, 500);
@@ -83,7 +81,11 @@ export default function WorldMap({ data, setParentCountries }){
           })
           .attr('d', feature => pathFactory(feature));
 
-    }, [data, dimensions, selectedCountryA, selectedCountryB, hoveredCountry]);
+    }, [data, selectedCountryA, selectedCountryB, dimensions, hoveredCountry]);
+
+    useEffect(() => {
+      setParentCountries([selectedCountryA, selectedCountryB]);
+    }, [selectedCountryA, selectedCountryB]);
 
     return(
         <div ref={wrapperRef} className="map-wrapper">
