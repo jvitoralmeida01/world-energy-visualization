@@ -20,27 +20,35 @@ async function createData(yearRange){
 }
 
 
-export default function TextBox({yearRange, setParentCountries}){
-    const [allCountriesArray, setallCountriesArray] = useState([]);
-    const [countryOne, setCountryOne] = useState({value: 'American Samoa', label: 'American Samoa'});
-    const [countryTwo, setCountryTwo] = useState("");
+export default function TextBox({parentCountryOne, parentCountryTwo, yearRange, setParentCountryOne, setParentCountryTwo}){
+  const [allCountriesArray, setallCountriesArray] = useState([]);
+  const [countryOne, setCountryOne] = useState(null);
+  const [countryTwo, setCountryTwo] = useState(null);
 
-    useEffect(() => {
-        let valueOne = countryOne != null ? countryOne : "";
-        let valueTwo = countryTwo != null ? countryTwo : "";
-        setParentCountries([valueOne, valueTwo]);
-      }, [countryOne, countryTwo]);
+  useEffect(() => {
+      if (parentCountryOne === ""){
+        setCountryOne(null);
+      }else{
+        setCountryOne({value: parentCountryOne, label: parentCountryOne})
+      }
 
-    useEffect(() => {
-        createData(yearRange).then(data => setallCountriesArray(data));
-    }, []);
-  
-    const options = allCountriesArray.map(function (x) {return {value: x, label:x}});
+      if (parentCountryTwo === ""){
+        setCountryTwo(null);
+      }else{
+        setCountryTwo({value: parentCountryTwo, label: parentCountryTwo})
+      }
+    }, [parentCountryOne, parentCountryTwo]);
 
-    return (
-        <div>
-            <Select options={options} onChange={(x) => setCountryOne(x.value)}/>
-            <Select options={options} onChange={(x) => setCountryTwo(x.value)}/>
-        </div>
-    );
+  useEffect(() => {
+      createData(yearRange).then(data => setallCountriesArray(data));
+  }, []);
+
+  const options = allCountriesArray.map(function (x) {return {value: x, label:x}});
+
+  return (
+    <div>
+      <Select options={options} value={countryOne} onChange={(x) => setParentCountryOne(x != null ? x.value : "")} isClearable={true}/>
+      <Select options={options} value={countryTwo} onChange={(x) => setParentCountryTwo(x != null ? x.value : "")} isClearable={true}/>
+    </div>
+  );
 }

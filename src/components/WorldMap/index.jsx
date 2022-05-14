@@ -34,7 +34,7 @@ function getGreaterColor(dataset, country, yearRange, colors){
   return colors[indexGreaterValue];
 }
 
-export default function WorldMap({ data, setParentCountries }){
+export default function WorldMap({ parentCountryOne, parentCountryTwo, data, setParentCountryOne, setParentCountryTwo }){
 
     const colors = ['Green', 'Red', 'Orange', 'Cyan', 'Purple', 'Black', 'Yellow', 'Pink'];
     const wrapperRef = useRef();
@@ -121,10 +121,13 @@ export default function WorldMap({ data, setParentCountries }){
 
     useEffect(() => {
       let valueOne = selectedCountryA != null ? selectedCountryA.properties.name : "";
-      let valueTwo = selectedCountryB != null ? selectedCountryB.properties.name : "";
-      setParentCountries([valueOne, valueTwo]);
-    }, [selectedCountryA, selectedCountryB]);
+      setParentCountryOne(valueOne);
+    }, [selectedCountryA]);
 
+    useEffect(() => {
+      let valueTwo = selectedCountryB != null ? selectedCountryB.properties.name : "";
+      setParentCountryTwo(valueTwo);
+    }, [selectedCountryB])
     return(
         <div ref={wrapperRef} className="map-wrapper">
           <MapToast alert={isAlerting}></MapToast>
