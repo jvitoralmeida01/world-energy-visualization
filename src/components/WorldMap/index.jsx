@@ -28,7 +28,6 @@ function getGreaterColor(dataset, country, yearRange, colors){
   }else{
     greaterValue = "" +greaterValue;
   }
-  
   //get index of higher value
   let indexGreaterValue = filteredDataset.indexOf(greaterValue);
   
@@ -121,7 +120,9 @@ export default function WorldMap({ data, setParentCountries }){
     }, [data, selectedCountryA, selectedCountryB, dimensions, hoveredCountry]);
 
     useEffect(() => {
-      setParentCountries([selectedCountryA, selectedCountryB]);
+      let valueOne = selectedCountryA != null ? selectedCountryA.properties.name : "";
+      let valueTwo = selectedCountryB != null ? selectedCountryB.properties.name : "";
+      setParentCountries([valueOne, valueTwo]);
     }, [selectedCountryA, selectedCountryB]);
 
     return(
