@@ -11,10 +11,7 @@ function App() {
 
   const [countryOne, setCountryOne] = useState("");
   const [countryTwo, setCountryTwo] = useState("");
-
-  useEffect(() => {
-    console.log(countryOne, countryTwo);
-  }, [countryOne, countryTwo]);
+  const [yearRange, setYearRange] = useState([2021,2021]);
 
   return (
     <div>
@@ -24,9 +21,12 @@ function App() {
           <TextBox 
             parentCountryOne = {countryOne}
             parentCountryTwo = {countryTwo}
-            yearRange={[2000,2000]} 
+            yearRange={yearRange}
             setParentCountryOne={setCountryOne} 
             setParentCountryTwo={setCountryTwo}
+          />
+          <SliderInput 
+            setParentYearRange={setYearRange}
           />
         </div>
         <div className="item-map">
@@ -34,6 +34,7 @@ function App() {
             data={mapData} 
             parentCountryOne = {countryOne}
             parentCountryTwo = {countryTwo}
+            yearRange = {yearRange}
             setParentCountryOne={setCountryOne} 
             setParentCountryTwo={setCountryTwo}/>
         </div>
@@ -43,7 +44,7 @@ function App() {
         </div>
 
         <div className="item-graphs">
-          <Graphs countryOne={countryOne} countryTwo={countryTwo} yearRange={[2000, 2000]} />
+          <Graphs countryOne={countryOne} countryTwo={countryTwo} yearRange={yearRange} />
         </div>
 
       </section>

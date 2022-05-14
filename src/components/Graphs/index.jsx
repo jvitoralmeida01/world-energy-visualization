@@ -41,19 +41,26 @@ async function createData(country, yearRange){
 export default function Graphs({countryOne, countryTwo, yearRange}){
 
   const [isDoubleCountry, setIsDoubleCountry] = useState(false) //One or Two
-  const [typeSearch, setTypeSearch] = useState("Year"); //Year or History
+  const [isYearSearch, setIsYearSearch] = useState(true); //Year or History
   const [dataOne, setDataOne] = useState([]);
   const [dataTwo, setDataTwo] = useState([]);
   
+  useEffect(() => {
+    if (yearRange[1] - yearRange[0] > 0){
+      setIsYearSearch(false);
+    }else{
+      setIsYearSearch(true);
+    }
+  }, [yearRange])
+
   useEffect(() => {
     if (countryOne != ""){
       createData(countryOne, yearRange).then(data => setDataOne(data));
     }else{
       setDataOne([]);
     }
-  }, [countryOne]);
+  }, [countryOne, yearRange]);
 
-  console.log(countryTwo);
   useEffect(() => {
     if(countryTwo != ""){
       createData(countryTwo, yearRange).then(data => setDataTwo(data));
@@ -62,22 +69,22 @@ export default function Graphs({countryOne, countryTwo, yearRange}){
       setDataTwo([]);
       setIsDoubleCountry(false);
     }
-  }, [countryTwo]);
+  }, [countryTwo, yearRange]);
 
   return (
     <div className="graph-wrapper">
 
-      {typeSearch == "Year" && !isDoubleCountry //Year, One
+      {isYearSearch && !isDoubleCountry //Year, One
       ? <div>
           <BarGraph dataset ={dataOne} />  
           <PieGraph dataset ={dataOne} />
        </div>
-      :typeSearch == "Year" && isDoubleCountry //Year, Two
+      :isYearSearch && isDoubleCountry //Year, Two
       ? <div>
           <GroupedBarGraph countryNameOne = {countryOne} datasetCountryOne={dataOne} countryNameTwo = {countryTwo} datasetCountryTwo={dataTwo}/>
           <StackedBarGraph dataset={dataOrganizer.arrayForEachLabel(dataOne.concat(dataTwo), 8)} labels={[countryOne, countryTwo]}/> {/*Country Comparation*/}
        </div>
-       :typeSearch == "History" && !isDoubleCountry //History, One
+       :!isYearSearch && !isDoubleCountry //History, One
        ? <div>
            <StackedBarGraph dataset={dataOrganizer.arrayForEachLabel(dataOne, 8)} labels={yearRange} countryName={countryOne}/> {/*Historical*/}
         </div>

@@ -34,7 +34,7 @@ function getGreaterColor(dataset, country, yearRange, colors){
   return colors[indexGreaterValue];
 }
 
-export default function WorldMap({ parentCountryOne, parentCountryTwo, data, setParentCountryOne, setParentCountryTwo }){
+export default function WorldMap({ parentCountryOne, parentCountryTwo, yearRange, data, setParentCountryOne, setParentCountryTwo }){
 
     const colors = ['Green', 'Red', 'Orange', 'Cyan', 'Purple', 'Black', 'Yellow', 'Pink'];
     const wrapperRef = useRef();
@@ -109,7 +109,7 @@ export default function WorldMap({ parentCountryOne, parentCountryTwo, data, set
                 return "cyan";
               }else{
                 if(selectedCountryA === null && selectedCountryB === null){
-                  return getGreaterColor(dataset, feature.properties.name, [2000,2000], colors) || "grey";
+                  return getGreaterColor(dataset, feature.properties.name, [yearRange[1], yearRange[1]], colors) || "grey";
                 }else{
                   return "grey";
                 }
@@ -117,7 +117,7 @@ export default function WorldMap({ parentCountryOne, parentCountryTwo, data, set
           })
           .attr('d', feature => pathFactory(feature));
 
-    }, [data, selectedCountryA, selectedCountryB, dimensions, hoveredCountry]);
+    }, [data, selectedCountryA, selectedCountryB, dimensions, hoveredCountry, yearRange]);
 
     useEffect(() => {
       let valueOne = selectedCountryA != null ? selectedCountryA.properties.name : "";
