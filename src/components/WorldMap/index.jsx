@@ -36,7 +36,7 @@ function getGreaterColor(dataset, country, yearRange, colors){
 
 export default function WorldMap({ parentCountryOne, parentCountryTwo, yearRange, data, setParentCountryOne, setParentCountryTwo }){
 
-    const colors = ['Green', 'Red', 'Orange', 'Cyan', 'Purple', 'Black', 'Yellow', 'Pink'];
+    const colors = ['#b3de69', '#fb8072', '#fdb462', '#80b1d3', '#bc80bd', '#444444', '#ffffb3', '#fccde5',];
     const wrapperRef = useRef();
     const svgRef = useRef();
     const alertRef = useRef();
@@ -109,9 +109,9 @@ export default function WorldMap({ parentCountryOne, parentCountryTwo, yearRange
                 return "cyan";
               }else{
                 if(selectedCountryA === null && selectedCountryB === null){
-                  return getGreaterColor(dataset, feature.properties.name, [yearRange[1], yearRange[1]], colors) || "grey";
+                  return getGreaterColor(dataset, feature.properties.name, [yearRange[1], yearRange[1]], colors) || "#aaa";
                 }else{
-                  return "grey";
+                  return "#aaa";
                 }
               }
           })

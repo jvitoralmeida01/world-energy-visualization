@@ -4,7 +4,7 @@ import { Bar } from 'react-chartjs-2';
 function createDatasets(dataset){
   let finalDataset = [];
   let labels = ["Biofuel", "Coal", "Gas", "Hydro", "Nuclear", "Oil", "Solar", "Wind"];
-  let backgroundColor = ['Green', 'Red', 'Orange', 'Cyan', 'Purple', 'Black', 'Yellow', 'Pink'];
+  let backgroundColor = ['#b3de69', '#fb8072', '#fdb462', '#80b1d3', '#bc80bd', '#444444', '#ffffb3', '#fccde5',]
 
   for (let i = 0; i < 8; i++){
     finalDataset.push(

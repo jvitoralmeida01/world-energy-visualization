@@ -7,7 +7,7 @@ export default function BarGraph({dataset}) {
     datasets: [{
       label: "Array de Dados",
       data: dataset,
-      backgroundColor: ['Green', 'Red', 'Orange', 'Cyan', 'Purple', 'Black', 'Yellow', 'Pink'],
+      backgroundColor: ['#b3de69', '#fb8072', '#fdb462', '#80b1d3', '#bc80bd', '#444444', '#ffffb3', '#fccde5',]
     }],
   };
 

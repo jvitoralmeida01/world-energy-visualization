@@ -8,12 +8,12 @@ export default function GroupedBarGraph({countryNameOne, datasetCountryOne, coun
           {
           label: countryNameOne,
           data: datasetCountryOne,
-          backgroundColor: ['blue'],
+          backgroundColor: ['#8dd3c7'],
           },
           {
             label: countryNameTwo,
             data: datasetCountryTwo,
-            backgroundColor: ['red'],
+            backgroundColor: ['#bebada'],
             },
         ],
       };

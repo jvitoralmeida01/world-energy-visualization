@@ -16,15 +16,17 @@ let labels = [
     'Wind'];
 
 let colors = [ 
-    'Green',
-    'Red',
-    'Orange',
-    'Cyan',
-    'Purple',
-    'Black',
-    'Yellow',
-    'Pink',
+    '#b3de69',
+    '#fb8072',
+    '#fdb462',
+    '#80b1d3',
+    '#bc80bd',
+    '#444444',
+    '#ffffb3',
+    '#fccde5',
 ];
+
+/*['#8dd3c7','#','#bebada','#','#','#','#','#','#d9d9d9','#'] */
 
 export default function PieGraph({dataset}) {
     
@@ -45,7 +47,7 @@ export default function PieGraph({dataset}) {
             label: 'Percentage of Production',
             data: finalDataset,
             backgroundColor: finalColors,
-            borderColor: '#ddd',
+            borderColor: '#d9d9d9',
             borderWidth: 1,
             },
         ],
