@@ -71,28 +71,43 @@ export default function Graphs({countryOne, countryTwo, yearRange}){
     }
   }, [countryTwo, yearRange]);
 
-  return (
-    <div className="graph-wrapper">
+  if(isDoubleCountry && (dataOne.length === 0 || dataTwo.length === 0)){
 
-      {isYearSearch && !isDoubleCountry //Year, One
-      ? <div>
-          <BarGraph dataset ={dataOne} />  
-          <PieGraph dataset ={dataOne} />
-       </div>
-      :isYearSearch && isDoubleCountry //Year, Two
-      ? <div>
-          <GroupedBarGraph countryNameOne = {countryOne} datasetCountryOne={dataOne} countryNameTwo = {countryTwo} datasetCountryTwo={dataTwo}/>
-          <StackedBarGraph dataset={dataOrganizer.arrayForEachLabel(dataOne.concat(dataTwo), 8)} labels={[countryOne, countryTwo]}/> {/*Country Comparation*/}
-       </div>
-       :!isYearSearch && !isDoubleCountry //History, One
-       ? <div>
-           <StackedBarGraph dataset={dataOrganizer.arrayForEachLabel(dataOne, 8)} labels={yearRange} countryName={countryOne}/> {/*Historical*/}
-        </div>
-      :<div> {/*History, Two*/}
-          <StackedBarGraph dataset={dataOrganizer.arrayForEachLabel(dataOne, 8)} labels={yearRange} countryName={countryOne}/> {/*Historical*/}
-          <StackedBarGraph dataset={dataOrganizer.arrayForEachLabel(dataTwo, 8)} labels={yearRange} countryName={countryTwo}/> {/*Historical*/}
-       </div>
-      }
-    </div>
-  );
+    let emptyCountry;
+
+    if(dataOne.length === 0){
+      emptyCountry = countryOne;
+    }else{
+      emptyCountry = countryTwo;
+    }
+
+    return (<div className="graph-wrapper">
+      <h1>{emptyCountry} has no data in {yearRange[0]} </h1>
+    </div>);
+  }else {
+    return (
+      <div className="graph-wrapper">
+  
+        {isYearSearch && !isDoubleCountry //Year, One
+        ? <div>
+            <BarGraph dataset ={dataOne} />  
+            <PieGraph dataset ={dataOne} />
+         </div>
+        :isYearSearch && isDoubleCountry //Year, Two
+        ? <div>
+            <GroupedBarGraph countryNameOne = {countryOne} datasetCountryOne={dataOne} countryNameTwo = {countryTwo} datasetCountryTwo={dataTwo}/>
+            <StackedBarGraph dataset={dataOrganizer.arrayForEachLabel(dataOne.concat(dataTwo), 8)} labels={[countryOne, countryTwo]}/> {/*Country Comparation*/}
+         </div>
+         :!isYearSearch && !isDoubleCountry //History, One
+         ? <div>
+             <StackedBarGraph dataset={dataOrganizer.arrayForEachLabel(dataOne, 8)} labels={yearRange} countryName={countryOne}/> {/*Historical*/}
+          </div>
+        :<div> {/*History, Two*/}
+            <StackedBarGraph dataset={dataOrganizer.arrayForEachLabel(dataOne, 8)} labels={yearRange} countryName={countryOne}/> {/*Historical*/}
+            <StackedBarGraph dataset={dataOrganizer.arrayForEachLabel(dataTwo, 8)} labels={yearRange} countryName={countryTwo}/> {/*Historical*/}
+         </div>
+        }
+      </div>
+    );
+  }
 }
