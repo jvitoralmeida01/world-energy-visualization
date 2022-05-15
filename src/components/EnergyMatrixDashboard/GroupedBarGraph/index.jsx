@@ -23,6 +23,12 @@ export default function GroupedBarGraph({countryNameOne, datasetCountryOne, coun
         responsive: true,
         plugins: {
           legend: {
+            title:{
+              color: '#fff',
+              display: true,
+              font: {weight: '600'},
+              text: 'Countries:',
+            },
             position: 'right',
             labels:{
               color: '#fff'
@@ -48,6 +54,11 @@ export default function GroupedBarGraph({countryNameOne, datasetCountryOne, coun
             },
             grid:{
               color: "#555"
+            },
+            title:{
+              color: '#ddd',
+              display: true,
+              text: 'Energy Source',
             }
           },
           x:{
@@ -56,6 +67,11 @@ export default function GroupedBarGraph({countryNameOne, datasetCountryOne, coun
             },
             grid:{
               color: "#555"
+            },
+            title:{
+              color: '#ddd',
+              display: true,
+              text: 'Percentage of Total',
             }
           },
         },

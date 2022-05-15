@@ -102,9 +102,9 @@ export default function WorldMap({ parentCountryOne, parentCountryTwo, yearRange
           .transition()
           .attr("fill", feature => {
               if(selectedCountryA === feature) {
-                return "gold";
+                return "#8dd3c7";
               }else if(selectedCountryB === feature) {
-                return "lime";
+                return "#bebada";
               } else if(hoveredCountry === feature) {
                 return "cyan";
               }else{

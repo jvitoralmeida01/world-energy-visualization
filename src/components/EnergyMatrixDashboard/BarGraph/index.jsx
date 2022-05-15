@@ -17,18 +17,6 @@ export default function BarGraph({dataset}) {
       legend: {
         display: false,
       },
-      title: {
-        display: true,
-        color: '#fff',
-        text: 'Country Energy Matrix',
-        padding: {
-          top: 15,
-          bottom: 5,
-        },
-        font:{
-          size: '14',
-        },
-      },
     },
     scales:{
       y:{
@@ -37,6 +25,11 @@ export default function BarGraph({dataset}) {
         },
         grid:{
           color: "#555"
+        },
+        title:{
+          color: '#ddd',
+          display: true,
+          text: 'Percentage of Total',
         }
       },
       x:{
@@ -45,6 +38,11 @@ export default function BarGraph({dataset}) {
         },
         grid:{
           color: "#555"
+        },
+        title:{
+          color: '#ddd',
+          display: true,
+          text: 'Energy Source',
         }
       },
     },

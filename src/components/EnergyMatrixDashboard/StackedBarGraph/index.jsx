@@ -23,14 +23,17 @@ function createDatasets(dataset){
 export default function StackedBarGraph({dataset, labels, countryName}){
   let finalDataset = createDatasets(dataset)
   let finalLabels;
+  let yAxisTitle = "";
 
   if (countryName == undefined){
     finalLabels = labels;
+    yAxisTitle = "Country";
   }else{
     let initValue = labels[0];
     let endValue = labels[1];
     let yearRange = endValue - initValue;
     finalLabels = [...Array(yearRange+1).keys()].map(i => i + initValue);
+    yAxisTitle = "Year";
   }
 
   let data = {
@@ -43,22 +46,17 @@ export default function StackedBarGraph({dataset, labels, countryName}){
     responsive: true,
     plugins: {
       legend: {
+        title:{
+          color: '#fff',
+          display: true,
+          font: {weight: '600'},
+          text: 'Energy source:',
+        },
         position: 'right',
+        align: 'start',
         labels:{
           color: '#fff'
         }
-      },
-      title: {
-        color: '#fff',
-        display: true,
-        text: `${countryName} - Energy Matrix Distribution`,
-        padding: {
-          top: 15,
-          bottom: 5,
-        },
-        font:{
-          size: '14',
-        },
       },
     },
     scales:{
@@ -69,6 +67,11 @@ export default function StackedBarGraph({dataset, labels, countryName}){
         stacked: true,
         grid:{
           color: "#555"
+        },
+        title:{
+          color: '#ddd',
+          display: true,
+          text: yAxisTitle,
         }
       },
       x:{
@@ -77,6 +80,11 @@ export default function StackedBarGraph({dataset, labels, countryName}){
         },
         grid:{
           color: "#555"
+        },
+        title:{
+          color: '#ddd',
+          display: true,
+          text: 'Percentage of Total',
         }
       },
     },
