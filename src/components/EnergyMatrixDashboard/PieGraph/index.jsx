@@ -1,5 +1,5 @@
 import React from 'react';
-import { Chart as ChartJS, ArcElement, Tooltip, Legend } from 'chart.js';
+import { Chart as ChartJS, ArcElement, Tooltip,Legend } from 'chart.js';
 import { Pie } from 'react-chartjs-2';
 import dataOrganizer from "../../../utils/dataOrganizer.mjs";
 
@@ -16,13 +16,13 @@ let labels = [
     'Wind'];
 
 let colors = [ 
-    '#b3de69',
+    '#95d12e',
     '#fb8072',
     '#fdb462',
     '#80b1d3',
     '#bc80bd',
     '#444444',
-    '#ffffb3',
+    '#e5e600',
     '#fccde5',
 ];
 
@@ -66,6 +66,26 @@ export default function PieGraph({dataset}) {
           },
           labels:{color: '#fff'}
         },
+        tooltip:{
+          xAlign: 'center',
+          displayColors: false,
+          bodyAlign: 'center',
+          backgroundColor: ((context)=> {
+            if (context.tooltipItems.length === 0){
+              return "#000"
+            }
+            return context.tooltipItems[0].element.options.backgroundColor;
+          }), 
+          borderColor: "#d9d9d9",
+          borderWidth: "1",
+          callbacks:{
+            label: ((tooltipItems)=> {
+              let label = tooltipItems.label;
+              let value = tooltipItems.formattedValue
+              return label + ": " + value + "%";
+            }),
+          }
+        }
       },
     };
 

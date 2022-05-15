@@ -7,7 +7,7 @@ export default function BarGraph({dataset}) {
     datasets: [{
       label: "Array de Dados",
       data: dataset,
-      backgroundColor: ['#b3de69', '#fb8072', '#fdb462', '#80b1d3', '#bc80bd', '#444444', '#ffffb3', '#fccde5',]
+      backgroundColor: ['#95d12e', '#fb8072', '#fdb462', '#80b1d3', '#bc80bd', '#444444', '#e5e600', '#fccde5',]
     }],
   };
 
@@ -16,6 +16,28 @@ export default function BarGraph({dataset}) {
     plugins: {
       legend: {
         display: false,
+      },
+      tooltip:{
+        xAlign: 'center',
+        yAlign: 'bottom',
+        displayColors: false,
+        backgroundColor: ((context)=> {
+          if (context.tooltipItems.length === 0){
+            return "000"
+          }
+          return context.tooltipItems[0].element.options.backgroundColor;
+        }), 
+        borderColor: "#d9d9d9",
+        borderWidth: "1",
+        bodyColor: "white",
+        callbacks:{
+          label: ((tooltipItems)=> {
+            let label = tooltipItems.label;
+            let value = tooltipItems.formattedValue
+            return label + ": " + value + "%";
+          }),
+          title: (()=>{return ""})
+        }
       },
     },
     scales:{

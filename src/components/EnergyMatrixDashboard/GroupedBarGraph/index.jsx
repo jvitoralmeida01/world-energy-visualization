@@ -46,6 +46,28 @@ export default function GroupedBarGraph({countryNameOne, datasetCountryOne, coun
               size: '14',
             },
           },
+          tooltip:{
+            xAlign: 'left',
+            yAlign: 'center',
+            displayColors: false,
+            backgroundColor: ((context)=> {
+              if (context.tooltipItems.length === 0){
+                return "000"
+              }
+              return context.tooltipItems[0].element.options.backgroundColor;
+            }), 
+            borderColor: "#d9d9d9",
+            borderWidth: "1",
+            bodyColor: "white",
+            callbacks:{
+              label: ((tooltipItems)=> {
+                let label = tooltipItems.label;
+                let value = tooltipItems.formattedValue
+                return label + ": " + value + "%";
+              }),
+              title: ((tooltipItems)=>{return tooltipItems[0].dataset.label})
+            }
+          },
         },
         scales:{
           y:{
