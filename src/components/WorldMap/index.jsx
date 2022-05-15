@@ -57,7 +57,7 @@ export default function WorldMap({ parentCountryOne, parentCountryTwo, yearRange
 
     useEffect(() => {
 
-        const colors = ['Green', 'Red', 'Orange', 'Cyan', 'Purple', 'Black', 'Yellow', 'Pink'];
+        const colors = ['#b3de69', '#fb8072', '#fdb462', '#80b1d3', '#bc80bd', '#444444', '#ffffb3', '#fccde5',];
         const svg = select(svgRef.current);
 
         const projection = geoMercator().fitSize([dimensions.width, dimensions.height], data).precision(100);
@@ -114,16 +114,16 @@ export default function WorldMap({ parentCountryOne, parentCountryTwo, yearRange
 
 
               if(selectedCountryA === feature) {
-                return "gold";
+                return "#8dd3c7";
               }else if(selectedCountryB === feature) {
-                return "lime";
+                return "#bebada";
               } else if(hoveredCountry === feature) {
                 return "white";
               }else{
                 if(selectedCountryA === null && selectedCountryB === null){
-                  return getGreaterColor(dataset, feature.properties.name, [yearRange[1], yearRange[1]], colors) || "grey";
+                  return getGreaterColor(dataset, feature.properties.name, [yearRange[1], yearRange[1]], colors) || "#aaa";
                 }else{
-                  return "grey";
+                  return "#aaa";
                 }
               }
           })

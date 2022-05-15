@@ -8,12 +8,12 @@ export default function GroupedBarGraph({countryNameOne, datasetCountryOne, coun
           {
           label: countryNameOne,
           data: datasetCountryOne,
-          backgroundColor: ['blue'],
+          backgroundColor: ['#8dd3c7'],
           },
           {
             label: countryNameTwo,
             data: datasetCountryTwo,
-            backgroundColor: ['red'],
+            backgroundColor: ['#bebada'],
             },
         ],
       };
@@ -23,6 +23,12 @@ export default function GroupedBarGraph({countryNameOne, datasetCountryOne, coun
         responsive: true,
         plugins: {
           legend: {
+            title:{
+              color: '#fff',
+              display: true,
+              font: {weight: '600'},
+              text: 'Countries:',
+            },
             position: 'right',
             labels:{
               color: '#fff'
@@ -40,6 +46,28 @@ export default function GroupedBarGraph({countryNameOne, datasetCountryOne, coun
               size: '14',
             },
           },
+          tooltip:{
+            xAlign: 'left',
+            yAlign: 'center',
+            displayColors: false,
+            backgroundColor: ((context)=> {
+              if (context.tooltipItems.length === 0){
+                return "000"
+              }
+              return context.tooltipItems[0].element.options.backgroundColor;
+            }), 
+            borderColor: "#d9d9d9",
+            borderWidth: "1",
+            bodyColor: "white",
+            callbacks:{
+              label: ((tooltipItems)=> {
+                let label = tooltipItems.label;
+                let value = tooltipItems.formattedValue
+                return label + ": " + value + "%";
+              }),
+              title: ((tooltipItems)=>{return tooltipItems[0].dataset.label})
+            }
+          },
         },
         scales:{
           y:{
@@ -48,14 +76,29 @@ export default function GroupedBarGraph({countryNameOne, datasetCountryOne, coun
             },
             grid:{
               color: "#555"
+            },
+            title:{
+              color: '#ddd',
+              display: true,
+              text: 'Energy Source',
             }
           },
           x:{
             ticks: {
-              color: '#ddd',
+              stepSize: 25,
+            color: '#ddd',
+            callback: ((context) => {
+              let newTickText = context + "%";
+              return newTickText;
+            })
             },
             grid:{
               color: "#555"
+            },
+            title:{
+              color: '#ddd',
+              display: true,
+              text: 'Percentage of Total',
             }
           },
         },
