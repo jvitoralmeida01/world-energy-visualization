@@ -17,7 +17,8 @@ function App() {
     <div>
 
       <section className="container">
-        <div>
+      
+        <div className="item-input">
           <TextBox 
             parentCountryOne = {countryOne}
             parentCountryTwo = {countryTwo}
@@ -29,6 +30,7 @@ function App() {
             setParentYearRange={setYearRange}
           />
         </div>
+        
         <div className="item-map">
           <WorldMap 
             data={mapData} 

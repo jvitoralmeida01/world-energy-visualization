@@ -36,10 +36,8 @@ function getGreaterColor(dataset, country, yearRange, colors){
 
 export default function WorldMap({ parentCountryOne, parentCountryTwo, yearRange, data, setParentCountryOne, setParentCountryTwo }){
 
-    const colors = ['Green', 'Red', 'Orange', 'Cyan', 'Purple', 'Black', 'Yellow', 'Pink'];
     const wrapperRef = useRef();
     const svgRef = useRef();
-    const alertRef = useRef();
     const dimensions = useResizeObserver(wrapperRef);
     const [selectedCountryA, setSelectedCountryA] = useState(null);
     const [selectedCountryB, setSelectedCountryB] = useState(null);
@@ -52,11 +50,17 @@ export default function WorldMap({ parentCountryOne, parentCountryTwo, yearRange
     }, []);
 
     useEffect(() => {
-        const {width, height} = dimensions || wrapperRef.current.getBoundingClientRect();
-        const svg = select(svgRef.current);
-        svg.attr("width", width).attr("height", height).style("stroke", "black").style("stroke-width", width/2000);
+      const {width, height} = dimensions || wrapperRef.current.getBoundingClientRect();
+      const svg = select(svgRef.current);
+      svg.attr("width", width).attr("height", height).style("stroke", "black").style("stroke-width", width/2000);
+    } , [dimensions]);
 
-        const projection = geoMercator().fitSize([width, height], data).precision(100);
+    useEffect(() => {
+
+        const colors = ['Green', 'Red', 'Orange', 'Cyan', 'Purple', 'Black', 'Yellow', 'Pink'];
+        const svg = select(svgRef.current);
+
+        const projection = geoMercator().fitSize([dimensions.width, dimensions.height], data).precision(100);
         const pathFactory = geoPath().projection(projection);
 
         document.addEventListener("keyup", (event) => {
@@ -101,12 +105,20 @@ export default function WorldMap({ parentCountryOne, parentCountryTwo, yearRange
           .attr('class', 'country')
           .transition()
           .attr("fill", feature => {
+              if(parentCountryOne === feature.properties.name){
+                setSelectedCountryA(feature)
+              }
+              if(parentCountryTwo === feature.properties.name){
+                setSelectedCountryB(feature)
+              }
+
+
               if(selectedCountryA === feature) {
                 return "gold";
               }else if(selectedCountryB === feature) {
                 return "lime";
               } else if(hoveredCountry === feature) {
-                return "cyan";
+                return "white";
               }else{
                 if(selectedCountryA === null && selectedCountryB === null){
                   return getGreaterColor(dataset, feature.properties.name, [yearRange[1], yearRange[1]], colors) || "grey";
@@ -117,17 +129,19 @@ export default function WorldMap({ parentCountryOne, parentCountryTwo, yearRange
           })
           .attr('d', feature => pathFactory(feature));
 
-    }, [data, selectedCountryA, selectedCountryB, dimensions, hoveredCountry, yearRange]);
+    }, [data, parentCountryOne, parentCountryTwo, hoveredCountry, yearRange, dataset]);
 
     useEffect(() => {
       let valueOne = selectedCountryA != null ? selectedCountryA.properties.name : "";
       setParentCountryOne(valueOne);
-    }, [selectedCountryA]);
+      setHoveredCountry(hoveredCountry)
+    }, [selectedCountryA, setParentCountryOne]);
 
     useEffect(() => {
       let valueTwo = selectedCountryB != null ? selectedCountryB.properties.name : "";
       setParentCountryTwo(valueTwo);
-    }, [selectedCountryB])
+    }, [selectedCountryB, setParentCountryTwo])
+
     return(
         <div ref={wrapperRef} className="map-wrapper">
           <MapToast alert={isAlerting}></MapToast>

@@ -26,6 +26,10 @@ export default function TextBox({parentCountryOne, parentCountryTwo, yearRange, 
   const [countryTwo, setCountryTwo] = useState(null);
 
   useEffect(() => {
+    createData(yearRange).then(data => setallCountriesArray(data));
+  }, []);
+
+  useEffect(() => {
       if (parentCountryOne === ""){
         setCountryOne(null);
       }else{
@@ -37,11 +41,7 @@ export default function TextBox({parentCountryOne, parentCountryTwo, yearRange, 
       }else{
         setCountryTwo({value: parentCountryTwo, label: parentCountryTwo})
       }
-    }, [parentCountryOne, parentCountryTwo]);
-
-  useEffect(() => {
-      createData(yearRange).then(data => setallCountriesArray(data));
-  }, []);
+  }, [parentCountryOne, parentCountryTwo]);
 
   const options = allCountriesArray.map(function (x) {return {value: x, label:x}});
 

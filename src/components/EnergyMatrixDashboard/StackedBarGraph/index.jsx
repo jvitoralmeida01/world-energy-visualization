@@ -16,7 +16,6 @@ function createDatasets(dataset){
       }
     );
   }
-  console.log (finalDataset);
   return finalDataset
 }
 
