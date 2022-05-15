@@ -63,7 +63,12 @@ export default function GroupedBarGraph({countryNameOne, datasetCountryOne, coun
           },
           x:{
             ticks: {
-              color: '#ddd',
+              stepSize: 25,
+            color: '#ddd',
+            callback: ((context) => {
+              let newTickText = context + "%";
+              return newTickText;
+            })
             },
             grid:{
               color: "#555"

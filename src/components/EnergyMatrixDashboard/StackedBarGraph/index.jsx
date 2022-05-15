@@ -76,7 +76,12 @@ export default function StackedBarGraph({dataset, labels, countryName}){
       },
       x:{
         ticks: {
+          stepSize: 25,
           color: '#ddd',
+          callback: ((context) => {
+            let newTickText = context + "%";
+            return newTickText;
+          })
         },
         grid:{
           color: "#555"
@@ -89,7 +94,7 @@ export default function StackedBarGraph({dataset, labels, countryName}){
       },
     },
   };
-
+  
   return (
     <div>
       <Bar data={data} options={options} />

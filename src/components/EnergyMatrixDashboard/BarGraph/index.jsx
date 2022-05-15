@@ -21,7 +21,11 @@ export default function BarGraph({dataset}) {
     scales:{
       y:{
         ticks:{
-          color: "#ddd",
+          color: '#ddd',
+          callback: ((context) => {
+            let newTickText = context + "%";
+            return newTickText;
+          })
         },
         grid:{
           color: "#555"
