@@ -1,3 +1,7 @@
+//Imports
+import { useState, useEffect } from 'react';
+import { Toaster } from 'react-hot-toast';
+
 //Custom Components
 import Title from './components/Title'
 import WorldMap from './components/WorldMap'
@@ -5,7 +9,6 @@ import Graphs from './components/Graphs'
 import mapData from "./worldMap.geo.json";
 import TextBox from './components/Inputs/TextBox';
 import SliderInput from './components/Inputs/SliderInput';
-import { useState, useEffect } from 'react'
 
 function App() {
 
@@ -14,9 +17,12 @@ function App() {
   const [yearRange, setYearRange] = useState([2021,2021]);
 
   return (
-    <div>
+    <section className="container">
 
-      <section className="container">
+        <Toaster
+        position="bottom-left"
+        reverseOrder={false}
+        />
       
         <div className="item-input">
           <TextBox 
@@ -49,8 +55,7 @@ function App() {
           <Graphs countryOne={countryOne} countryTwo={countryTwo} yearRange={yearRange} />
         </div>
 
-      </section>
-    </div>
+    </section>
   );
 }
 

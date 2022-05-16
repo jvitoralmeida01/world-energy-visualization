@@ -89,20 +89,21 @@ export default function Graphs({countryOne, countryTwo, yearRange}){
       <div className="graph-wrapper">
   
         {isYearSearch && !isDoubleCountry //Year, One
-        ? <div>
+        ? <div style={{maxWidth: '30vw'}}>
             <BarGraph dataset ={dataOne} />  
             <PieGraph dataset ={dataOne} />
          </div>
         :isYearSearch && isDoubleCountry //Year, Two
-        ? <div>
+        ? <div style={{maxWidth: '30vw'}}>
             <GroupedBarGraph countryNameOne = {countryOne} datasetCountryOne={dataOne} countryNameTwo = {countryTwo} datasetCountryTwo={dataTwo}/>
+            <div style={{height: '15vh'}} />
             <StackedBarGraph dataset={dataOrganizer.arrayForEachLabel(dataOne.concat(dataTwo), 8)} labels={[countryOne, countryTwo]}/> {/*Country Comparation*/}
          </div>
          :!isYearSearch && !isDoubleCountry //History, One
-         ? <div>
+         ? <div style={{maxWidth: '30vw'}}>
              <StackedBarGraph dataset={dataOrganizer.arrayForEachLabel(dataOne, 8)} labels={yearRange} countryName={countryOne}/> {/*Historical*/}
           </div>
-        :<div> {/*History, Two*/}
+        :<div style={{maxWidth: '30vw'}}> {/*History, Two*/}
             <StackedBarGraph dataset={dataOrganizer.arrayForEachLabel(dataOne, 8)} labels={yearRange} countryName={countryOne}/> {/*Historical*/}
             <StackedBarGraph dataset={dataOrganizer.arrayForEachLabel(dataTwo, 8)} labels={yearRange} countryName={countryTwo}/> {/*Historical*/}
          </div>
