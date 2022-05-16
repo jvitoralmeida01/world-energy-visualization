@@ -48,18 +48,6 @@ export default function GroupedBarGraph({countryNameOne, datasetCountryOne, coun
             color: '#fff'
           }
         },
-        title: {
-          color: '#fff',
-          display: true,
-          text: `${countryNameOne} x ${countryNameTwo} Energy Matrix`,
-          padding: {
-            top: 15,
-            bottom: 5,
-          },
-          font:{
-            size: '14',
-          },
-        },
         tooltip:{
           xAlign: 'left',
           yAlign: 'center',
