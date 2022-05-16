@@ -26,9 +26,7 @@ ChartJS.register(
   Legend
 );
 
-async function createData(country, yearRange){
-  let labels = ["biofuel_share_elec", "coal_share_elec", "gas_share_elec", "hydro_share_elec", "nuclear_share_elec",
-    "oil_share_elec", "solar_share_elec", "wind_share_elec"];
+async function createData(country, yearRange, labels){
 
   let rawDataset = await DataGrabber.fetchDataset("https://raw.githubusercontent.com/owid/energy-data/master/owid-energy-data.csv");
   let filteredDataset = datasetFilter.filterByCountry(rawDataset, country);
@@ -40,10 +38,16 @@ async function createData(country, yearRange){
 
 export default function Graphs({countryOne, countryTwo, yearRange}){
 
+  //Page State Variables
   const [isDoubleCountry, setIsDoubleCountry] = useState(false) //One or Two
   const [isYearSearch, setIsYearSearch] = useState(true); //Year or History
-  const [dataOne, setDataOne] = useState([]);
-  const [dataTwo, setDataTwo] = useState([]);
+  const [isOnlyPercentage, setIsOnlyPercentage] = useState (false); //Only percentage or With Kw/h
+
+  //Dataset Variables
+  const [dataOneTotal, setDataOneTotal] = useState([]);
+  const [dataOnePercentage, setDataOnePercentage] = useState([]);
+  const [dataTwoTotal, setDataTwoTotal] = useState([]);
+  const [dataTwoPercentage, setDataTwoPercentage] = useState([]);
   
   useEffect(() => {
     if (yearRange[1] - yearRange[0] > 0){
@@ -55,27 +59,47 @@ export default function Graphs({countryOne, countryTwo, yearRange}){
 
   useEffect(() => {
     if (countryOne != ""){
-      createData(countryOne, yearRange).then(data => setDataOne(data));
+      //Creating data for dataOnePercentage
+      let labels = ["biofuel_share_elec", "coal_share_elec", "gas_share_elec", "hydro_share_elec", "nuclear_share_elec",
+      "oil_share_elec", "solar_share_elec", "wind_share_elec"];
+      createData(countryOne, yearRange, labels).then(data => setDataOnePercentage(data));
+
+      //Creating data for dataOneTotal
+      labels = ["biofuel_electricity", "coal_electricity", "gas_electricity", "hydro_electricity", "nuclear_electricity",
+      "oil_electricity", "solar_electricity", "wind_electricity"];
+      createData(countryOne, yearRange, labels).then(data => setDataOneTotal(data));
     }else{
-      setDataOne([]);
+      setDataOneTotal([]);
+      setDataOnePercentage([]);
     }
   }, [countryOne, yearRange]);
 
   useEffect(() => {
     if(countryTwo != ""){
-      createData(countryTwo, yearRange).then(data => setDataTwo(data));
+      //Creating data for dataTwoPercentage
+      let labels = ["biofuel_share_elec", "coal_share_elec", "gas_share_elec", "hydro_share_elec", "nuclear_share_elec",
+      "oil_share_elec", "solar_share_elec", "wind_share_elec"];
+      createData(countryTwo, yearRange, labels).then(data => setDataTwoPercentage(data));
+
+      //Creating data for dataTwoTotal
+      labels = ["biofuel_electricity", "coal_electricity", "gas_electricity", "hydro_electricity", "nuclear_electricity",
+      "oil_electricity", "solar_electricity", "wind_electricity"];
+      createData(countryTwo, yearRange, labels).then(data => setDataTwoTotal(data));
+
+      //set two countries existence
       setIsDoubleCountry(true);
     }else{
-      setDataTwo([]);
+      setDataTwoTotal([]);
+      setDataTwoPercentage([]);
       setIsDoubleCountry(false);
     }
   }, [countryTwo, yearRange]);
 
-  if(isDoubleCountry && (dataOne.length === 0 || dataTwo.length === 0)){
+  if(isDoubleCountry && (dataOneTotal.length === 0 || dataTwoTotal.length === 0)){ //Isso esta bugado
 
     let emptyCountry;
 
-    if(dataOne.length === 0){
+    if(dataOneTotal.length === 0){
       emptyCountry = countryOne;
     }else{
       emptyCountry = countryTwo;
@@ -90,22 +114,22 @@ export default function Graphs({countryOne, countryTwo, yearRange}){
   
         {isYearSearch && !isDoubleCountry //Year, One
         ? <div style={{maxWidth: '30vw'}}>
-            <BarGraph dataset ={dataOne} />  
-            <PieGraph dataset ={dataOne} />
+            <BarGraph dataset ={isOnlyPercentage? dataOnePercentage : dataOneTotal} isOnlyPercentage ={isOnlyPercentage}/>  
+            <PieGraph dataset ={dataOnePercentage} />
          </div>
         :isYearSearch && isDoubleCountry //Year, Two
         ? <div style={{maxWidth: '30vw'}}>
-            <GroupedBarGraph countryNameOne = {countryOne} datasetCountryOne={dataOne} countryNameTwo = {countryTwo} datasetCountryTwo={dataTwo}/>
+            <GroupedBarGraph countryNameOne = {countryOne} datasetCountryOne={isOnlyPercentage? dataOnePercentage : dataOneTotal} countryNameTwo = {countryTwo} datasetCountryTwo={isOnlyPercentage? dataTwoPercentage : dataTwoTotal} isOnlyPercentage ={isOnlyPercentage}/>
             <div style={{height: '15vh'}} />
-            <StackedBarGraph dataset={dataOrganizer.arrayForEachLabel(dataOne.concat(dataTwo), 8)} labels={[countryOne, countryTwo]}/> {/*Country Comparation*/}
+            <StackedBarGraph dataset={dataOrganizer.arrayForEachLabel(dataOnePercentage.concat(dataTwoPercentage), 8)} labels={[countryOne, countryTwo]}/> {/*Country Comparation*/}
          </div>
          :!isYearSearch && !isDoubleCountry //History, One
          ? <div style={{maxWidth: '30vw'}}>
-             <StackedBarGraph dataset={dataOrganizer.arrayForEachLabel(dataOne, 8)} labels={yearRange} countryName={countryOne}/> {/*Historical*/}
+             <StackedBarGraph dataset={dataOrganizer.arrayForEachLabel(isOnlyPercentage? dataOnePercentage : dataOneTotal, 8)} labels={yearRange} countryName={countryOne} isOnlyPercentage ={isOnlyPercentage}/> {/*Historical*/}
           </div>
         :<div style={{maxWidth: '30vw'}}> {/*History, Two*/}
-            <StackedBarGraph dataset={dataOrganizer.arrayForEachLabel(dataOne, 8)} labels={yearRange} countryName={countryOne}/> {/*Historical*/}
-            <StackedBarGraph dataset={dataOrganizer.arrayForEachLabel(dataTwo, 8)} labels={yearRange} countryName={countryTwo}/> {/*Historical*/}
+            <StackedBarGraph dataset={dataOrganizer.arrayForEachLabel(isOnlyPercentage? dataOnePercentage : dataOneTotal, 8)} labels={yearRange} countryName={countryOne} isOnlyPercentage ={isOnlyPercentage}/> {/*Historical*/}
+            <StackedBarGraph dataset={dataOrganizer.arrayForEachLabel(isOnlyPercentage? dataTwoPercentage : dataTwoTotal, 8)} labels={yearRange} countryName={countryTwo} isOnlyPercentage ={isOnlyPercentage}/> {/*Historical*/}
          </div>
         }
       </div>

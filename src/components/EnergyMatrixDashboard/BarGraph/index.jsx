@@ -1,7 +1,21 @@
 import React from 'react';
 import { Bar } from 'react-chartjs-2';
 
-export default function BarGraph({dataset}) {
+export default function BarGraph({dataset, isOnlyPercentage}) {
+  let xAxisTitle = "";
+  let axisSymbol = "";
+  let hoverSymbol = "";
+
+  if (isOnlyPercentage){
+    xAxisTitle = "Percentage of Total";
+    axisSymbol = "%";
+    hoverSymbol = "%";
+  }else{
+    xAxisTitle = "Production (TWh)";
+    axisSymbol = "";
+    hoverSymbol = " TWh";
+  }
+
   let data = {
     labels: ["Biofuel", "Coal", "Gas", "Hydro", "Nuclear", "Oil", "Solar", "Wind"],
     datasets: [{
@@ -34,7 +48,7 @@ export default function BarGraph({dataset}) {
           label: ((tooltipItems)=> {
             let label = tooltipItems.label;
             let value = tooltipItems.formattedValue
-            return label + ": " + value + "%";
+            return label + ": " + value + hoverSymbol;
           }),
           title: (()=>{return ""})
         }
@@ -45,7 +59,7 @@ export default function BarGraph({dataset}) {
         ticks:{
           color: '#ddd',
           callback: ((context) => {
-            let newTickText = context + "%";
+            let newTickText = context + axisSymbol;
             return newTickText;
           })
         },
@@ -55,7 +69,7 @@ export default function BarGraph({dataset}) {
         title:{
           color: '#ddd',
           display: true,
-          text: 'Percentage of Total',
+          text: xAxisTitle,
         }
       },
       x:{

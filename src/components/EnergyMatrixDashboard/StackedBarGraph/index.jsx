@@ -2,6 +2,7 @@ import React from "react";
 import { Bar } from 'react-chartjs-2';
 
 function createDatasets(dataset){
+
   let finalDataset = [];
   let labels = ["Biofuel", "Coal", "Gas", "Hydro", "Nuclear", "Oil", "Solar", "Wind"];
   let backgroundColor = ['#95d12e', '#fb8072', '#fdb462', '#80b1d3', '#bc80bd', '#444444', '#e5e600', '#fccde5',];
@@ -19,11 +20,24 @@ function createDatasets(dataset){
   return finalDataset
 }
 
-export default function StackedBarGraph({dataset, labels, countryName}){
+export default function StackedBarGraph({dataset, labels, countryName, isOnlyPercentage}){
   let finalDataset = createDatasets(dataset)
   let finalLabels;
-  let yAxisTitle = "";
   let titleCountry = "";
+  let yAxisTitle = "";
+  let xAxisTitle = "";
+  let xAxisSymbol = "";
+  let hoverSymbol = "";
+
+  if (isOnlyPercentage){
+    xAxisTitle = "Percentage of Total";
+    xAxisSymbol = "%";
+    hoverSymbol = "%";
+  }else{
+    xAxisTitle = "Production (TWh)";
+    xAxisSymbol = "";
+    hoverSymbol = " TWh";
+  }
 
   if (countryName == undefined){
     finalLabels = labels;
@@ -76,7 +90,7 @@ export default function StackedBarGraph({dataset, labels, countryName}){
           label: ((tooltipItems)=> {
             let label = tooltipItems.dataset.label;
             let value = tooltipItems.formattedValue
-            return label + ": " + value + "%";
+            return label + ": " + value + hoverSymbol;
           }),
           title: ((tooltipItems)=>{return titleCountry + tooltipItems[0].label})
         }
@@ -102,7 +116,7 @@ export default function StackedBarGraph({dataset, labels, countryName}){
           stepSize: 25,
           color: '#ddd',
           callback: ((context) => {
-            let newTickText = context + "%";
+            let newTickText = context + xAxisSymbol;
             return newTickText;
           })
         },
@@ -112,7 +126,7 @@ export default function StackedBarGraph({dataset, labels, countryName}){
         title:{
           color: '#ddd',
           display: true,
-          text: 'Percentage of Total',
+          text: xAxisTitle,
         }
       },
     },
