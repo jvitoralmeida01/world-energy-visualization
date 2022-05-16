@@ -27,7 +27,7 @@ export default function TextBox({parentCountryOne, parentCountryTwo, yearRange, 
 
   useEffect(() => {
     createData(yearRange).then(data => setallCountriesArray(data));
-  }, []);
+  }, [yearRange]);
 
   useEffect(() => {
       if (parentCountryOne === ""){
