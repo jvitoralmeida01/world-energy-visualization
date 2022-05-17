@@ -1,6 +1,7 @@
 import React from "react";
 import { Bar } from 'react-chartjs-2';
 
+
 export default function GroupedBarGraph({countryNameOne, datasetCountryOne, countryNameTwo, datasetCountryTwo, isOnlyPercentage}){
   let xAxisTitle = "";
   let axisSymbol = "";
@@ -33,20 +34,15 @@ export default function GroupedBarGraph({countryNameOne, datasetCountryOne, coun
     };
   
     const options = {
-      indexAxis: 'y',
+      maintainAspectRatio: false,
+      indexAxis: 'x',
       responsive: true,
       plugins: {
         legend: {
-          title:{
-            color: '#fff',
-            display: true,
-            font: {weight: '600'},
-            text: 'Countries:',
-          },
-          position: 'right',
+          position: 'top',
           labels:{
             color: '#fff'
-          }
+          },
         },
         tooltip:{
           xAlign: 'left',
@@ -75,24 +71,10 @@ export default function GroupedBarGraph({countryNameOne, datasetCountryOne, coun
         y:{
           ticks:{
             color: "#ddd",
-          },
-          grid:{
-            color: "#555"
-          },
-          title:{
-            color: '#ddd',
-            display: true,
-            text: 'Energy Source',
-          }
-        },
-        x:{
-          ticks: {
-            stepSize: 25,
-          color: '#ddd',
-          callback: ((context) => {
-            let newTickText = context + axisSymbol;
-            return newTickText;
-          })
+            callback: ((context) => {
+              let newTickText = context + axisSymbol;
+              return newTickText;
+            }),
           },
           grid:{
             color: "#555"
@@ -103,11 +85,26 @@ export default function GroupedBarGraph({countryNameOne, datasetCountryOne, coun
             text: xAxisTitle,
           }
         },
+        x:{
+          ticks: {
+            stepSize: 25,
+          color: '#ddd',
+          
+          },
+          grid:{
+            color: "#555"
+          },
+          title:{
+            color: '#ddd',
+            display: true,
+            text: 'Energy Source',
+          }
+        },
       },
     };
   
     return (
-      <div>
+      <div className="chart-container">
         <Bar data={data} options={options} />
       </div>);
 };

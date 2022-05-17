@@ -13,9 +13,11 @@ async function createData(yearRange){
 
   let rawDataset = await DataGrabber.fetchDataset("https://raw.githubusercontent.com/owid/energy-data/master/owid-energy-data.csv");
   let filteredDataset = datasetFilter.filterByYear(rawDataset, yearRange);
+  filteredDataset = datasetFilter.filterByValidValues(filteredDataset);
   filteredDataset = datasetFilter.filterByLabels(filteredDataset, labels);
   let uniqueCountries = filteredDataset.filter(onlyUnique);
 
+  console.log (uniqueCountries)
   return uniqueCountries;
 }
 
@@ -26,7 +28,7 @@ export default function TextBox({parentCountryOne, parentCountryTwo, yearRange, 
   const [countryTwo, setCountryTwo] = useState(null);
 
   useEffect(() => {
-    createData(yearRange).then(data => setallCountriesArray(data));
+    createData([yearRange[1],yearRange[1]]).then(data => setallCountriesArray(data));
   }, [yearRange]);
 
   useEffect(() => {
@@ -47,8 +49,8 @@ export default function TextBox({parentCountryOne, parentCountryTwo, yearRange, 
 
   return (
     <div>
-      <Select options={options} value={countryOne} onChange={(x) => setParentCountryOne(x != null ? x.value : "")} isClearable={true}/>
-      <Select options={options} value={countryTwo} onChange={(x) => setParentCountryTwo(x != null ? x.value : "")} isClearable={true}/>
+      <Select className="selection" options={options} value={countryOne} onChange={(x) => setParentCountryOne(x != null ? x.value : "")}/>
+      <Select className="selection" options={options} value={countryTwo} onChange={(x) => setParentCountryTwo(x != null ? x.value : "")}/>
     </div>
   );
 }

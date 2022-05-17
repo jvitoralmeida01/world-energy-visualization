@@ -26,6 +26,7 @@ export default function BarGraph({dataset, isOnlyPercentage}) {
   };
 
   const options = {
+    maintainAspectRatio: false,
     responsive: true,
     plugins: {
       legend: {
@@ -89,7 +90,8 @@ export default function BarGraph({dataset, isOnlyPercentage}) {
   };
 
   return (
-    <div>
+    <div className="chart-container">
       <Bar data={data} options={options} />
-    </div>);
+    </div>
+  )
 }

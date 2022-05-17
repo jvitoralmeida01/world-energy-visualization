@@ -57,6 +57,7 @@ function countryHasData(dataset, country, yearRange) {
 
   let filteredDataset = datasetFilter.filterByCountry(dataset, country);
   filteredDataset = datasetFilter.filterByYear(filteredDataset, yearRange);
+  filteredDataset = datasetFilter.filterByValidValues(filteredDataset);
   filteredDataset = datasetFilter.filterByLabels(filteredDataset, labels);
   
   return filteredDataset.length > 0;
@@ -109,8 +110,13 @@ export default function WorldMap({ parentCountryOne, parentCountryTwo, yearRange
           .join('path')
           .on("click", (d, feature) => {	
             if(selectedCountryB !== feature){
-              if(countryHasData(dataset, feature.properties.name, yearRange)){
-                setSelectedCountryA(selectedCountryA === feature ? null : feature);
+              if(countryHasData(dataset, feature.properties.name, [yearRange[1],yearRange[1]])){
+                if(selectedCountryA === feature){
+                  setSelectedCountryA(selectedCountryB);
+                  setSelectedCountryB(null);
+                }else{
+                  setSelectedCountryA(feature);
+                }
               }else{
                 toast.error("Oops! Sorry :(\nWe've got no " + yearRange[0] + " data for " + feature.properties.name, {style: toastStyleError});
               }
@@ -121,7 +127,7 @@ export default function WorldMap({ parentCountryOne, parentCountryTwo, yearRange
           })
           .on("contextmenu", (d, feature) => {
             if(selectedCountryA !== feature){
-              if(countryHasData(dataset, feature.properties.name, yearRange)){
+              if(countryHasData(dataset, feature.properties.name, [yearRange[1],yearRange[1]])){
                 setSelectedCountryB(selectedCountryB === feature ? null : feature);
               }else{
                 toast.error("Oops! Sorry :(\nWe've got no " + yearRange[0] + " data for " + feature.properties.name, {style: toastStyleError});
@@ -168,9 +174,14 @@ export default function WorldMap({ parentCountryOne, parentCountryTwo, yearRange
           })
           .attr('d', feature => pathFactory(feature));
 
-          console.warn(parentCountryOne, parentCountryTwo);
+    }, [data, parentCountryOne, parentCountryTwo, hoveredCountry, dataset, renderTrigger, yearRange]);
 
-    }, [data, parentCountryOne, parentCountryTwo, hoveredCountry, yearRange, dataset, renderTrigger]);
+    useEffect(() => {
+      setSelectedCountryA(null);
+      setSelectedCountryB(null);
+      setParentCountryOne('');
+      setParentCountryTwo('');
+    }, [yearRange])
 
     useEffect(() => {
       let valueOne = selectedCountryA != null ? selectedCountryA.properties.name : "";

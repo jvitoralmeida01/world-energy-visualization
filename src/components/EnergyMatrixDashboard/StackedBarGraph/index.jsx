@@ -57,20 +57,16 @@ export default function StackedBarGraph({dataset, labels, countryName, isOnlyPer
   };
   
   const options = {
+    maintainAspectRatio: false,
     indexAxis: 'y',
     responsive: true,
     plugins: {
       legend: {
-        title:{
-          color: '#fff',
-          display: true,
-          font: {weight: '600'},
-          text: 'Energy source:',
-        },
         position: 'right',
         align: 'start',
         labels:{
-          color: '#fff'
+          color: '#fff',
+          usePointStyle: true,
         }
       },
       tooltip:{
@@ -104,11 +100,6 @@ export default function StackedBarGraph({dataset, labels, countryName, isOnlyPer
         stacked: true,
         grid:{
           color: "#555"
-        },
-        title:{
-          color: '#ddd',
-          display: true,
-          text: yAxisTitle,
         }
       },
       x:{
@@ -133,7 +124,7 @@ export default function StackedBarGraph({dataset, labels, countryName, isOnlyPer
   };
   
   return (
-    <div>
+    <div className="chart-container">
       <Bar data={data} options={options} />
     </div>);
 }

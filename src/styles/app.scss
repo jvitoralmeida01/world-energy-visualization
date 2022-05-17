@@ -7,28 +7,25 @@
     display: grid;
     grid-gap: 16px;
     grid-template-areas: 
-        "a a b b b"
+        "a d e e f"
         "c c b b b"
         "c c b b b"
         "c c b b b"
         "c c b b b"
         "c c b b b"
-        "c c e e e";
+        "c c b b b";
 }
 
 .item-title{
-    grid-area: a;
-}
-
-.item-input{
     max-height: 20vh;
-    grid-area: e;
+    grid-area: a;
 }
 
 .item-graphs{
     max-width: 50vw;
-    height: 80vh;
+    height: 82vh;
     grid-area: b;
+    margin: 0px auto;
 }
 
 .item-map{
@@ -38,4 +35,21 @@
     padding-bottom: 40px;
     background-color: #ccc;
     border-radius: 24px;
+    margin: 0px auto;
+    height: 82vh;
+    width: 60vw;
+}
+
+.item-selection{
+    height: 12vh;
+    grid-area: d;
+}
+.item-slider{
+    height: 12vh;
+    grid-area: e;
+}
+
+.item-button{
+    height: 12vh;
+    grid-area: f;
 }

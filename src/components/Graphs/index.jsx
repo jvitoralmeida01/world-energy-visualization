@@ -36,12 +36,11 @@ async function createData(country, yearRange, labels){
   return filteredDataset;
 }
 
-export default function Graphs({countryOne, countryTwo, yearRange}){
+export default function Graphs({countryOne, countryTwo, yearRange, isOnlyPercentage}){
 
   //Page State Variables
   const [isDoubleCountry, setIsDoubleCountry] = useState(false) //One or Two
   const [isYearSearch, setIsYearSearch] = useState(true); //Year or History
-  const [isOnlyPercentage, setIsOnlyPercentage] = useState (false); //Only percentage or With Kw/h
 
   //Dataset Variables
   const [dataOneTotal, setDataOneTotal] = useState([]);
@@ -55,6 +54,8 @@ export default function Graphs({countryOne, countryTwo, yearRange}){
     }else{
       setIsYearSearch(true);
     }
+    countryOne = ''
+    countryTwo = ''
   }, [yearRange])
 
   useEffect(() => {
@@ -95,51 +96,50 @@ export default function Graphs({countryOne, countryTwo, yearRange}){
     }
   }, [countryTwo, yearRange]);
 
-  if(isDoubleCountry && (dataOneTotal.length === 0 || dataTwoTotal.length === 0)){ //Isso esta bugado
 
-    let emptyCountry;
-
-    if(dataOneTotal.length === 0){
-      emptyCountry = countryOne;
-    }else{
-      emptyCountry = countryTwo;
+    if(countryOne.length == '' && countryTwo.length == ''){
+      return(
+        <div className="graph-wrapper">
+          <h1 className="indicator-emoji" style={{height: '200px', width: '200px'}}>👈</h1>
+          <h3> 🗾 Select one <span className="tutorial">(left click)</span> or more <span className="tutorial">(right click)</span> countries to visualize and compare it's data;</h3>
+          <h4 className="tutorial"> 🔍 If you can´t find a given Country on the map, feel free to select it with the input on the top;</h4>
+          <h4 className="tutorial"> 📆 Change the sliders on the top to alter the year range of the data;</h4>
+          <h4 className="tutorial"> 🎯 Click the button on the top-right to toggle between absolute values or percentage values;</h4>
+          <h4 className="tutorial"> ⌨️ You can also click 'Esc' to cancel your selection.</h4>
+        </div>
+      )
     }
 
-    return (<div className="graph-wrapper">
-      <h1>{emptyCountry} has no data in {yearRange[0]} </h1>
-    </div>);
-  }else {
     return (
       <div className="graph-wrapper">
-  
         {isYearSearch && !isDoubleCountry //Year, One
-        ? <div style={{maxWidth: '30vw'}}>
-            <h3>{countryOne} Energy Generation Matrix ({isOnlyPercentage? "in %" : "in TWh"})</h3>
+        ? <div>
+            <h3 className="title-one">{countryOne} Energy Generation Matrix ({isOnlyPercentage? "in %" : "in TWh"})</h3>            
             <BarGraph dataset ={isOnlyPercentage? dataOnePercentage : dataOneTotal} isOnlyPercentage ={isOnlyPercentage}/>  
-            <h3>{countryOne} Energy Generation by Energy Source</h3>
-            <PieGraph dataset ={dataOnePercentage} />
+
+            <h3 className="title-pie">{countryOne} Energy Generation by Energy Source</h3>
+              <PieGraph dataset ={dataOnePercentage} />
          </div>
         :isYearSearch && isDoubleCountry //Year, Two
-        ? <div style={{maxWidth: '30vw'}}>
-            <h3>{countryOne} x {countryTwo} Energy Generation Matrix ({isOnlyPercentage? "in %" : "in TWh"})</h3>
+        ? <div>
+            <h3 className="title-one">{countryOne} x {countryTwo} Energy Generation Matrix ({isOnlyPercentage? "in %" : "in TWh"})</h3>            
             <GroupedBarGraph countryNameOne = {countryOne} datasetCountryOne={isOnlyPercentage? dataOnePercentage : dataOneTotal} countryNameTwo = {countryTwo} datasetCountryTwo={isOnlyPercentage? dataTwoPercentage : dataTwoTotal} isOnlyPercentage ={isOnlyPercentage}/>
-            <div style={{height: '15vh'}} />
-            <h3>{countryOne} x {countryTwo} Energy Generation Matrix</h3>
-            <StackedBarGraph dataset={dataOrganizer.arrayForEachLabel(dataOnePercentage.concat(dataTwoPercentage), 8)} labels={[countryOne, countryTwo]}/> {/*Country Comparation*/}
+
+            <h3 className="title-two">{countryOne} x {countryTwo} Energy Generation Matrix</h3>
+            <StackedBarGraph dataset={dataOrganizer.arrayForEachLabel(dataOnePercentage.concat(dataTwoPercentage), 8)} labels={[countryOne, countryTwo]} isOnlyPercentage={true}/> {/*Country Comparation*/}
          </div>
          :!isYearSearch && !isDoubleCountry //History, One
-         ? <div style={{maxWidth: '30vw'}}>
-             <h3>{countryOne} Energy Generation Matrix from {yearRange[0]} to {yearRange[1]}</h3>
+         ? <div>
+             <h3 className="title-one">{countryOne} Energy Generation Matrix from {yearRange[0]} to {yearRange[1]} ({isOnlyPercentage? "in %" : "in TWh"})</h3>
              <StackedBarGraph dataset={dataOrganizer.arrayForEachLabel(isOnlyPercentage? dataOnePercentage : dataOneTotal, 8)} labels={yearRange} countryName={countryOne} isOnlyPercentage ={isOnlyPercentage}/> {/*Historical*/}
           </div>
-        :<div style={{maxWidth: '30vw'}}> {/*History, Two*/}
-            <h3>{countryOne} Energy Generation Matrix from {yearRange[0]} to {yearRange[1]}</h3>
+        :<div> {/*History, Two*/}
+            <h3 className="title-one">{countryOne} Energy Generation Matrix from {yearRange[0]} to {yearRange[1]} ({isOnlyPercentage? "in %" : "in TWh"})</h3>
             <StackedBarGraph dataset={dataOrganizer.arrayForEachLabel(isOnlyPercentage? dataOnePercentage : dataOneTotal, 8)} labels={yearRange} countryName={countryOne} isOnlyPercentage ={isOnlyPercentage}/> {/*Historical*/}
-            <h3>{countryTwo} Energy Generation Matrix from {yearRange[0]} to {yearRange[1]}</h3>
+            <h3 className="title-two">{countryTwo} Energy Generation Matrix from {yearRange[0]} to {yearRange[1]} ({isOnlyPercentage? "in %" : "in TWh"})</h3>
             <StackedBarGraph dataset={dataOrganizer.arrayForEachLabel(isOnlyPercentage? dataTwoPercentage : dataTwoTotal, 8)} labels={yearRange} countryName={countryTwo} isOnlyPercentage ={isOnlyPercentage}/> {/*Historical*/}
          </div>
         }
       </div>
     );
-  }
 }

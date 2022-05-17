@@ -54,6 +54,7 @@ export default function PieGraph({dataset}) {
     };
 
     const options = {
+      maintainAspectRatio: false,
       responsive: true,
       plugins: {
         legend:{
@@ -89,5 +90,9 @@ export default function PieGraph({dataset}) {
       },
     };
 
-    return <Pie data={data} options={options} />;
+    return (
+    <div className="chart-container">
+      <Pie data={data} options={options} />
+    </div>
+    );
 }
