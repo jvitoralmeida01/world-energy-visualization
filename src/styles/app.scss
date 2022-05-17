@@ -53,3 +53,54 @@
     height: 12vh;
     grid-area: f;
 }
+
+
+.entrance{
+    position: absolute;
+    align-self: center;
+    margin: auto;
+    width: 100vw;
+    height: 100vh;
+    border-radius: 24px;
+    z-index: 1;
+}
+
+.loading-frame{
+    width: 100vw;
+    height: 11vh;
+    text-align: center;
+    text-justify: center;
+    margin-top: 25%;
+    left: 50%;
+}
+
+.loading-icon{
+    font-size: 10vh;
+    width: 10%;
+    animation: loading-animation 3s infinite linear;
+}
+
+@keyframes loading-animation{
+    0%{
+        transform: rotate(0deg);
+    }
+    100%{
+        transform: rotate(359deg);
+    }
+}
+
+.loading-text{
+    position: absolute;
+    font-size: 10vh;
+    transform: translate(10vw, -11vh);
+    animation: text-loading-animation 3s infinite linear;
+}
+
+@keyframes text-loading-animation{
+    0%, 100%{
+        opacity: 0;
+    }
+    50%{
+        opacity: 1;
+    }
+}
