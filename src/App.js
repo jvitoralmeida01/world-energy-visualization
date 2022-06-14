@@ -4,13 +4,13 @@ import { Toaster } from 'react-hot-toast';
 import gsap from 'gsap';
 
 //Custom Components
-import Title from './components/Title'
-import WorldMap from './components/WorldMap'
+import Title from './components/UiResources/Title'
+import WorldMap from './components/Graphs/Maps/WorldMap'
 import Graphs from './components/Graphs'
 import mapData from "./worldMap.geo.json";
-import TextBox from './components/Inputs/TextBox';
-import SliderInput from './components/Inputs/SliderInput';
-import ButtonInput from './components/Inputs/ButtonInput';
+import TextBox from './components/UiResources/Inputs/TextBox';
+import SliderInput from './components/UiResources/Inputs/SliderInput';
+import ButtonInput from './components/UiResources/Inputs/ButtonInput';
 
 function App() { 
 

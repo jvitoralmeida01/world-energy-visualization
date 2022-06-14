@@ -1,7 +1,7 @@
 import React from 'react';
 import { Bar } from 'react-chartjs-2';
 
-export default function BarGraph({dataset, isOnlyPercentage}) {
+export default function BarChart({dataset, isOnlyPercentage}) {
   let xAxisTitle = "";
   let axisSymbol = "";
   let hoverSymbol = "";

@@ -1,7 +1,7 @@
 import React from 'react';
 import { Chart as ChartJS, ArcElement, Tooltip,Legend } from 'chart.js';
 import { Pie } from 'react-chartjs-2';
-import dataOrganizer from "../../../utils/dataOrganizer.mjs";
+import dataOrganizer from "../../../../utils/dataOrganizer.mjs";
 
 ChartJS.register(ArcElement, Tooltip, Legend);
 
@@ -28,7 +28,7 @@ let colors = [
 
 /*['#8dd3c7','#','#bebada','#','#','#','#','#','#d9d9d9','#'] */
 
-export default function PieGraph({dataset}) {
+export default function PieChart({dataset}) {
     
     let finalUnifiedData = [[],[],[]];
     if (dataset.length > 0){

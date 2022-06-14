@@ -1,7 +1,7 @@
 import React from "react";
 import Select from 'react-select'
-import DataGrabber from "../../../utils/dataGrabber.mjs";
-import datasetFilter from "../../../utils/datasetFilter.mjs";
+import dataGrabber from "../../../../utils/dataGrabber.mjs";
+import datasetFilter from "../../../../utils/datasetFilter.mjs";
 import { useState, useEffect } from 'react'
 
 function onlyUnique(value, index, self) {
@@ -11,7 +11,7 @@ function onlyUnique(value, index, self) {
 async function createData(yearRange){
   let labels = ["country"];
 
-  let rawDataset = await DataGrabber.fetchDataset("https://raw.githubusercontent.com/owid/energy-data/master/owid-energy-data.csv");
+  let rawDataset = await dataGrabber.fetchDataset("https://raw.githubusercontent.com/owid/energy-data/master/owid-energy-data.csv");
   let filteredDataset = datasetFilter.filterByYear(rawDataset, yearRange);
   filteredDataset = datasetFilter.filterByValidValues(filteredDataset);
   filteredDataset = datasetFilter.filterByLabels(filteredDataset, labels);

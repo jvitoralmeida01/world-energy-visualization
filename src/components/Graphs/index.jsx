@@ -1,9 +1,9 @@
 import React, {useEffect, useState, useRef}  from "react";
-import BarGraph from "../EnergyMatrixDashboard/BarGraph";
-import PieGraph from "../EnergyMatrixDashboard/PieGraph";
-import GroupedBarGraph from "../EnergyMatrixDashboard/GroupedBarGraph";
-import StackedBarGraph from "../EnergyMatrixDashboard/StackedBarGraph";
-import DataGrabber from "../../utils/dataGrabber.mjs";
+import BarChart from "../Graphs/SimpleCharts/BarChart";
+import PieChart from "../Graphs/SimpleCharts/PieChart";
+import GroupedBarChart from "../Graphs/SimpleCharts/GroupedBarChart";
+import StackedBarChart from "../Graphs/SimpleCharts/StackedBarChart";
+import dataGrabber from "../../utils/dataGrabber.mjs";
 import datasetFilter from "../../utils/datasetFilter.mjs";
 import dataOrganizer from "../../utils/dataOrganizer.mjs";
 
@@ -28,7 +28,7 @@ ChartJS.register(
 
 async function createData(country, yearRange, labels){
 
-  let rawDataset = await DataGrabber.fetchDataset("https://raw.githubusercontent.com/owid/energy-data/master/owid-energy-data.csv");
+  let rawDataset = await dataGrabber.fetchDataset("https://raw.githubusercontent.com/owid/energy-data/master/owid-energy-data.csv");
   let filteredDataset = datasetFilter.filterByCountry(rawDataset, country);
   filteredDataset = datasetFilter.filterByYear(filteredDataset, yearRange);
   filteredDataset = datasetFilter.filterByLabels(filteredDataset, labels);
@@ -115,29 +115,29 @@ export default function Graphs({countryOne, countryTwo, yearRange, isOnlyPercent
         {isYearSearch && !isDoubleCountry //Year, One
         ? <div>
             <h3 className="title-one">{countryOne} Energy Generation Matrix ({isOnlyPercentage? "in %" : "in TWh"})</h3>            
-            <BarGraph dataset ={isOnlyPercentage? dataOnePercentage : dataOneTotal} isOnlyPercentage ={isOnlyPercentage}/>  
+            <BarChart dataset ={isOnlyPercentage? dataOnePercentage : dataOneTotal} isOnlyPercentage ={isOnlyPercentage}/>  
 
             <h3 className="title-pie">{countryOne} Energy Generation by Energy Source</h3>
-              <PieGraph dataset ={dataOnePercentage} />
+              <PieChart dataset ={dataOnePercentage} />
          </div>
         :isYearSearch && isDoubleCountry //Year, Two
         ? <div>
             <h3 className="title-one">{countryOne} x {countryTwo} Energy Generation Matrix ({isOnlyPercentage? "in %" : "in TWh"})</h3>            
-            <GroupedBarGraph countryNameOne = {countryOne} datasetCountryOne={isOnlyPercentage? dataOnePercentage : dataOneTotal} countryNameTwo = {countryTwo} datasetCountryTwo={isOnlyPercentage? dataTwoPercentage : dataTwoTotal} isOnlyPercentage ={isOnlyPercentage}/>
+            <GroupedBarChart countryNameOne = {countryOne} datasetCountryOne={isOnlyPercentage? dataOnePercentage : dataOneTotal} countryNameTwo = {countryTwo} datasetCountryTwo={isOnlyPercentage? dataTwoPercentage : dataTwoTotal} isOnlyPercentage ={isOnlyPercentage}/>
 
             <h3 className="title-two">{countryOne} x {countryTwo} Energy Generation Matrix</h3>
-            <StackedBarGraph dataset={dataOrganizer.arrayForEachLabel(dataOnePercentage.concat(dataTwoPercentage), 8)} labels={[countryOne, countryTwo]} isOnlyPercentage={true}/> {/*Country Comparation*/}
+            <StackedBarChart dataset={dataOrganizer.arrayForEachLabel(dataOnePercentage.concat(dataTwoPercentage), 8)} labels={[countryOne, countryTwo]} isOnlyPercentage={true}/> {/*Country Comparation*/}
          </div>
          :!isYearSearch && !isDoubleCountry //History, One
          ? <div>
              <h3 className="title-one">{countryOne} Energy Generation Matrix from {yearRange[0]} to {yearRange[1]} ({isOnlyPercentage? "in %" : "in TWh"})</h3>
-             <StackedBarGraph dataset={dataOrganizer.arrayForEachLabel(isOnlyPercentage? dataOnePercentage : dataOneTotal, 8)} labels={yearRange} countryName={countryOne} isOnlyPercentage ={isOnlyPercentage}/> {/*Historical*/}
+             <StackedBarChart dataset={dataOrganizer.arrayForEachLabel(isOnlyPercentage? dataOnePercentage : dataOneTotal, 8)} labels={yearRange} countryName={countryOne} isOnlyPercentage ={isOnlyPercentage}/> {/*Historical*/}
           </div>
         :<div> {/*History, Two*/}
             <h3 className="title-one">{countryOne} Energy Generation Matrix from {yearRange[0]} to {yearRange[1]} ({isOnlyPercentage? "in %" : "in TWh"})</h3>
-            <StackedBarGraph dataset={dataOrganizer.arrayForEachLabel(isOnlyPercentage? dataOnePercentage : dataOneTotal, 8)} labels={yearRange} countryName={countryOne} isOnlyPercentage ={isOnlyPercentage}/> {/*Historical*/}
+            <StackedBarChart dataset={dataOrganizer.arrayForEachLabel(isOnlyPercentage? dataOnePercentage : dataOneTotal, 8)} labels={yearRange} countryName={countryOne} isOnlyPercentage ={isOnlyPercentage}/> {/*Historical*/}
             <h3 className="title-two">{countryTwo} Energy Generation Matrix from {yearRange[0]} to {yearRange[1]} ({isOnlyPercentage? "in %" : "in TWh"})</h3>
-            <StackedBarGraph dataset={dataOrganizer.arrayForEachLabel(isOnlyPercentage? dataTwoPercentage : dataTwoTotal, 8)} labels={yearRange} countryName={countryTwo} isOnlyPercentage ={isOnlyPercentage}/> {/*Historical*/}
+            <StackedBarChart dataset={dataOrganizer.arrayForEachLabel(isOnlyPercentage? dataTwoPercentage : dataTwoTotal, 8)} labels={yearRange} countryName={countryTwo} isOnlyPercentage ={isOnlyPercentage}/> {/*Historical*/}
          </div>
         }
       </div>

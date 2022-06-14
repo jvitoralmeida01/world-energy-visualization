@@ -20,7 +20,7 @@ function createDatasets(dataset){
   return finalDataset
 }
 
-export default function StackedBarGraph({dataset, labels, countryName, isOnlyPercentage}){
+export default function StackedBarChart({dataset, labels, countryName, isOnlyPercentage}){
   let finalDataset = createDatasets(dataset)
   let finalLabels;
   let titleCountry = "";

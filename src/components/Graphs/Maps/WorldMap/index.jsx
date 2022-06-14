@@ -1,10 +1,10 @@
 import React, {useRef, useEffect, useState} from "react";
 import {select, geoPath, geoMercator} from 'd3';
 import gsap from 'gsap';
-import useResizeObserver from "../../hooks/useResizeObserver";
-import MapToast from "./mapToast";
-import DataGrabber from "../../utils/dataGrabber.mjs";
-import datasetFilter from "../../utils/datasetFilter.mjs";
+import useResizeObserver from "../../../../hooks/useResizeObserver";
+import MapToast from "./MapToast";
+import DataGrabber from "../../../../utils/dataGrabber.mjs";
+import datasetFilter from "../../../../utils/datasetFilter.mjs";
 
 import toast from  'react-hot-toast'
 
