@@ -6,11 +6,11 @@ import gsap from 'gsap';
 //Custom Components
 import Title from './components/UiResources/Title'
 import WorldMap from './components/Graphs/Maps/WorldMap'
-import Graphs from './components/Graphs'
 import mapData from "./worldMap.geo.json";
 import TextBox from './components/UiResources/Inputs/TextBox';
 import SliderInput from './components/UiResources/Inputs/SliderInput';
 import ButtonInput from './components/UiResources/Inputs/ButtonInput';
+import EnergyMatrixDashboard from './DashBoards/EnergyMatrixDashboard';
 
 function App() { 
 
@@ -79,7 +79,7 @@ function App() {
           </div>
   
           <div className="item-graphs">
-            <Graphs countryOne={countryOne} countryTwo={countryTwo} yearRange={yearRange} isOnlyPercentage={isAbsolute}/>
+            <EnergyMatrixDashboard countryOne={countryOne} countryTwo={countryTwo} yearRange={yearRange} isOnlyPercentage={isAbsolute}/>
           </div>
   
       </section>
@@ -88,16 +88,3 @@ function App() {
 }
 
 export default App;
-
-
-      // <section className="container">
-
-      //   <div className="item-title">
-      //     <Title text="World Energy Visualization"/>
-      //   </div>
-
-      //   <div className="item-graphs">
-      //     <Graphs />
-      //   </div>
-
-      // </section>
