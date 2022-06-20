@@ -1,16 +1,25 @@
+//React Imports
 import React, {useEffect, useState, useRef}  from "react";
+
+//SubParts Imports
 import GraphsManager from "./Subparts/GraphsManager";
+
+//Map Imports
 import { Toaster } from 'react-hot-toast';
 import mapData from "../../worldMap.geo.json";
 import WorldMap from '../../components/Graphs/Maps/WorldMap'
+
+//Inputs and UI Imports
 import Title from '../../components/UiResources/Title'
 import TextBox from '../../components/UiResources/Inputs/TextBox';
 import SliderInput from '../../components/UiResources/Inputs/SliderInput';
 import ButtonInput from '../../components/UiResources/Inputs/ButtonInput';
+
+//Utils Imports
 import dataGrabber from "../../utils/dataGrabber.mjs";
 import datasetFilter from "../../utils/datasetFilter.mjs";
 
-
+//Get dataset and return with especified labels, year and country
 async function createData(country, yearRange, labels){
   let rawDataset = await dataGrabber.fetchDataset("https://raw.githubusercontent.com/owid/energy-data/master/owid-energy-data.csv");
   let filteredDataset = datasetFilter.filterByCountry(rawDataset, country);
@@ -22,15 +31,19 @@ async function createData(country, yearRange, labels){
 
 export default function EnergyMatrixDashboard (){
   
+  //Input Variables
   const [countryOne, setCountryOne] = useState("");
   const [countryTwo, setCountryTwo] = useState("");
   const [yearRange, setYearRange] = useState([2021,2021]);
   const [isOnlyPercentage, setIsOnlyPercentage] = useState(false);
+
+  //Dataset Variables
   const [dataOneTotal, setDataOneTotal] = useState([]);
   const [dataOnePercentage, setDataOnePercentage] = useState([]);
   const [dataTwoTotal, setDataTwoTotal] = useState([]);
   const [dataTwoPercentage, setDataTwoPercentage] = useState([]);
 
+  //Update country one datasets
   useEffect(() => {
     if (countryOne != ""){
       //Creating data for dataOnePercentage
@@ -48,6 +61,7 @@ export default function EnergyMatrixDashboard (){
     }
   }, [countryOne, yearRange]);
 
+  //Update country two datasets
   useEffect(() => {
     if(countryTwo != ""){
       //Creating data for dataTwoPercentage
@@ -71,7 +85,7 @@ export default function EnergyMatrixDashboard (){
       <Toaster
         position="bottom-left"
         reverseOrder={false}
-        />
+      />
         
       <div className="item-title">
         <Title text={"World Energy Visualization"}/>
@@ -92,7 +106,10 @@ export default function EnergyMatrixDashboard (){
       </div>
 
       <div className="item-button">
-        <ButtonInput setParentAbsolute={setIsOnlyPercentage} parentAbsolute={isOnlyPercentage}/>
+        <ButtonInput 
+          setParentAbsolute={setIsOnlyPercentage} 
+          parentAbsolute={isOnlyPercentage}
+        />
       </div>
 
       <div className="item-map">
@@ -102,9 +119,9 @@ export default function EnergyMatrixDashboard (){
           parentCountryTwo = {countryTwo}
           yearRange = {yearRange}
           setParentCountryOne={setCountryOne} 
-          setParentCountryTwo={setCountryTwo}/>
+          setParentCountryTwo={setCountryTwo}
+        />
       </div>
-
 
       <div className="item-graphs">
         <GraphsManager 
@@ -114,7 +131,8 @@ export default function EnergyMatrixDashboard (){
           dataTwo={isOnlyPercentage? dataTwoPercentage : dataTwoTotal}
           dataPie={dataOnePercentage} 
           yearRange={yearRange} 
-          isOnlyPercentage={isOnlyPercentage}/>
+          isOnlyPercentage={isOnlyPercentage}
+        />
       </div>
 
     </section>

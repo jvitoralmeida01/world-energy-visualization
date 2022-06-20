@@ -1,4 +1,7 @@
+//React Imports
 import { useState, useEffect} from 'react';
+
+//Dashboard Imports
 import EnergyMatrixDashboard from './DashBoards/EnergyMatrixDashboard';
 
 function App() { 
@@ -12,6 +15,7 @@ function App() {
     }, 3000);
   }, [])
 
+  //First loading animation
   if(isLoading){
     return (
       <div className="entrance">

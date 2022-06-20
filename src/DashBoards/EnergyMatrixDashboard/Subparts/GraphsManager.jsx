@@ -1,10 +1,16 @@
+//React Imports
 import React, {useEffect, useState, useRef}  from "react";
+
+//Chart Imports
 import BarChart from "../../../components/Graphs/SimpleCharts/BarChart";
 import PieChart from "../../../components/Graphs/SimpleCharts/PieChart";
 import GroupedBarChart from "../../../components/Graphs/SimpleCharts/GroupedBarChart";
 import StackedBarChart from "../../../components/Graphs/SimpleCharts/StackedBarChart";
+
+//Utils Imports
 import dataOrganizer from "../../../utils/dataOrganizer.mjs";
 
+//ChartJs Imports
 import {
   Chart as ChartJS,
   CategoryScale,
@@ -29,7 +35,8 @@ export default function GraphsManager({countryOne, dataOne, dataPie, countryTwo,
   //Page State Variables
   const [isDoubleCountry, setIsDoubleCountry] = useState(false) //One or Two
   const [isYearSearch, setIsYearSearch] = useState(true); //Year or History
-  
+
+  //Update quantity of countries boolean
   useEffect(() => {
     if (countryTwo !== ""){
       setIsDoubleCountry(true);
@@ -39,6 +46,7 @@ export default function GraphsManager({countryOne, dataOne, dataPie, countryTwo,
     }
   }, [countryTwo]);
 
+  //Update type of search
   useEffect(() => {
     if (yearRange[1] - yearRange[0] > 0){
       setIsYearSearch(false);
@@ -48,6 +56,7 @@ export default function GraphsManager({countryOne, dataOne, dataPie, countryTwo,
   }, [yearRange])
 
 
+  //Instructions for using this visualization 
   if(countryOne == '' && countryTwo == ''){
     return(
       <div className="graph-wrapper">
@@ -60,43 +69,76 @@ export default function GraphsManager({countryOne, dataOne, dataPie, countryTwo,
       </div>
     )
   }
-  else if (isYearSearch && !isDoubleCountry){//Year, One
+  //Visualization: One country and Year Search
+  else if (isYearSearch && !isDoubleCountry){
     return (
       <div className="graph-wrapper">
-        <h3 className="title-one">{countryOne} Energy Generation Matrix ({isOnlyPercentage? "in %" : "in TWh"})</h3>            
-        <BarChart dataset ={dataOne} isOnlyPercentage ={isOnlyPercentage}/>  
+        <h3 className="title-one">{countryOne} Energy Generation Matrix ({isOnlyPercentage ? "in %" : "in TWh"})</h3>            
+        <BarChart 
+          dataset ={dataOne} 
+          isOnlyPercentage ={isOnlyPercentage}
+        />  
 
         <h3 className="title-pie">{countryOne} Energy Generation by Energy Source</h3>
         <PieChart dataset ={dataPie} />
       </div>
     )
   }
-  else if (isYearSearch && isDoubleCountry){//Year, Two
+  //Visualization: Two countries and Year Search
+  else if (isYearSearch && isDoubleCountry){
     return(
       <div className="graph-wrapper">
-        <h3 className="title-one">{countryOne} x {countryTwo} Energy Generation Matrix ({isOnlyPercentage? "in %" : "in TWh"})</h3>            
-        <GroupedBarChart countryNameOne = {countryOne} datasetCountryOne={dataOne} countryNameTwo = {countryTwo} datasetCountryTwo={dataTwo} isOnlyPercentage ={isOnlyPercentage}/>
+        <h3 className="title-one">{countryOne} x {countryTwo} Energy Generation Matrix ({isOnlyPercentage ? "in %" : "in TWh"})</h3>            
+        <GroupedBarChart 
+          countryNameOne = {countryOne} 
+          datasetCountryOne={dataOne} 
+          countryNameTwo = {countryTwo} 
+          datasetCountryTwo={dataTwo} 
+          isOnlyPercentage ={isOnlyPercentage}
+        />
 
         <h3 className="title-two">{countryOne} x {countryTwo} Energy Generation Matrix</h3>
-        <StackedBarChart dataset={dataOrganizer.arrayForEachLabel(dataOne.concat(dataTwo), 8)} labels={[countryOne, countryTwo]} isOnlyPercentage={true}/>
+        <StackedBarChart 
+          dataset={dataOrganizer.arrayForEachLabel(dataOne.concat(dataTwo), 8)} 
+          labels={[countryOne, countryTwo]} 
+          isOnlyPercentage={true}
+        />
       </div>
     )
   }
-  else if (!isYearSearch && !isDoubleCountry){//History, One
+  //Visualization: One country and Historical Search
+  else if (!isYearSearch && !isDoubleCountry){
     return(
       <div className="graph-wrapper">
-        <h3 className="title-one">{countryOne} Energy Generation Matrix from {yearRange[0]} to {yearRange[1]} ({isOnlyPercentage? "in %" : "in TWh"})</h3>
-        <StackedBarChart dataset={dataOrganizer.arrayForEachLabel(dataOne, 8)} labels={yearRange} countryName={countryOne} isOnlyPercentage ={isOnlyPercentage}/>
+        <h3 className="title-one">{countryOne} Energy Generation Matrix from {yearRange[0]} to {yearRange[1]} ({isOnlyPercentage ? "in %" : "in TWh"})</h3>
+        <StackedBarChart 
+          dataset={dataOrganizer.arrayForEachLabel(dataOne, 8)} 
+          labels={yearRange} 
+          countryName={countryOne} 
+          isOnlyPercentage ={isOnlyPercentage}
+        />
       </div>
     )
   }
-  else{/*History, Two*/
+  //Visualization: Two countries and Historical Search
+  else{
     return(
       <div className="graph-wrapper">
-        <h3 className="title-one">{countryOne} Energy Generation Matrix from {yearRange[0]} to {yearRange[1]} ({isOnlyPercentage? "in %" : "in TWh"})</h3>
-        <StackedBarChart dataset={dataOrganizer.arrayForEachLabel(dataOne, 8)} labels={yearRange} countryName={countryOne} isOnlyPercentage ={isOnlyPercentage}/>
-        <h3 className="title-two">{countryTwo} Energy Generation Matrix from {yearRange[0]} to {yearRange[1]} ({isOnlyPercentage? "in %" : "in TWh"})</h3>
-        <StackedBarChart dataset={dataOrganizer.arrayForEachLabel(dataTwo, 8)} labels={yearRange} countryName={countryTwo} isOnlyPercentage ={isOnlyPercentage}/>
+        <h3 className="title-one">{countryOne} Energy Generation Matrix from {yearRange[0]} to {yearRange[1]} ({isOnlyPercentage ? "in %" : "in TWh"})</h3>
+        <StackedBarChart 
+          dataset={dataOrganizer.arrayForEachLabel(dataOne, 8)} 
+          labels={yearRange} 
+          countryName={countryOne} 
+          isOnlyPercentage ={isOnlyPercentage}
+        />
+
+        <h3 className="title-two">{countryTwo} Energy Generation Matrix from {yearRange[0]} to {yearRange[1]} ({isOnlyPercentage ? "in %" : "in TWh"})</h3>
+        <StackedBarChart 
+          dataset={dataOrganizer.arrayForEachLabel(dataTwo, 8)}
+          labels={yearRange}
+          countryName={countryTwo}
+          isOnlyPercentage ={isOnlyPercentage}
+        />
       </div>
     )
   }
