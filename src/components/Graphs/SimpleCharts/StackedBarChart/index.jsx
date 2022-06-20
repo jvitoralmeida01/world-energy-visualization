@@ -1,5 +1,6 @@
 import React from "react";
 import { Bar } from 'react-chartjs-2';
+import dataOrganizer from "../../../../utils/dataOrganizer.mjs";
 
 function createDatasets(dataset){
 
@@ -21,7 +22,9 @@ function createDatasets(dataset){
 }
 
 export default function StackedBarChart({dataset, labels, countryName, isOnlyPercentage}){
-  let finalDataset = createDatasets(dataset)
+  let finalDataset = dataOrganizer.arrayForEachLabel(dataset, 8);
+  finalDataset = createDatasets(finalDataset)
+
   let finalLabels;
   let titleCountry = "";
   let yAxisTitle = "";

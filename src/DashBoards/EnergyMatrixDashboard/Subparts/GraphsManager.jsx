@@ -7,9 +7,6 @@ import PieChart from "../../../components/Graphs/SimpleCharts/PieChart";
 import GroupedBarChart from "../../../components/Graphs/SimpleCharts/GroupedBarChart";
 import StackedBarChart from "../../../components/Graphs/SimpleCharts/StackedBarChart";
 
-//Utils Imports
-import dataOrganizer from "../../../utils/dataOrganizer.mjs";
-
 //ChartJs Imports
 import {
   Chart as ChartJS,
@@ -35,8 +32,9 @@ export default function GraphsManager({countryOne, dataOne, dataPie, countryTwo,
   //Page State Variables
   const [isDoubleCountry, setIsDoubleCountry] = useState(false) //One or Two
   const [isYearSearch, setIsYearSearch] = useState(true); //Year or History
+  const [unit, setUnit] = useState("in %"); //% or TWH
 
-  //Update quantity of countries boolean
+  //Update quantity of countries
   useEffect(() => {
     if (countryTwo !== ""){
       setIsDoubleCountry(true);
@@ -55,6 +53,14 @@ export default function GraphsManager({countryOne, dataOne, dataPie, countryTwo,
     }
   }, [yearRange])
 
+  //Update Chart Units
+  useEffect(() => {
+    if (isOnlyPercentage){
+      setUnit("in %");
+    }else{
+      setUnit("in TWh");
+    }
+  }, [isOnlyPercentage])
 
   //Instructions for using this visualization 
   if(countryOne == '' && countryTwo == ''){
@@ -73,7 +79,7 @@ export default function GraphsManager({countryOne, dataOne, dataPie, countryTwo,
   else if (isYearSearch && !isDoubleCountry){
     return (
       <div className="graph-wrapper">
-        <h3 className="title-one">{countryOne} Energy Generation Matrix ({isOnlyPercentage ? "in %" : "in TWh"})</h3>            
+        <h3 className="title-one">{countryOne} Energy Generation Matrix ({unit})</h3>            
         <BarChart 
           dataset ={dataOne} 
           isOnlyPercentage ={isOnlyPercentage}
@@ -88,7 +94,7 @@ export default function GraphsManager({countryOne, dataOne, dataPie, countryTwo,
   else if (isYearSearch && isDoubleCountry){
     return(
       <div className="graph-wrapper">
-        <h3 className="title-one">{countryOne} x {countryTwo} Energy Generation Matrix ({isOnlyPercentage ? "in %" : "in TWh"})</h3>            
+        <h3 className="title-one">{countryOne} x {countryTwo} Energy Generation Matrix ({unit})</h3>            
         <GroupedBarChart 
           countryNameOne = {countryOne} 
           datasetCountryOne={dataOne} 
@@ -99,9 +105,9 @@ export default function GraphsManager({countryOne, dataOne, dataPie, countryTwo,
 
         <h3 className="title-two">{countryOne} x {countryTwo} Energy Generation Matrix</h3>
         <StackedBarChart 
-          dataset={dataOrganizer.arrayForEachLabel(dataOne.concat(dataTwo), 8)} 
+          dataset={dataOne.concat(dataTwo)} 
           labels={[countryOne, countryTwo]} 
-          isOnlyPercentage={true}
+          isOnlyPercentage={isOnlyPercentage}
         />
       </div>
     )
@@ -110,9 +116,9 @@ export default function GraphsManager({countryOne, dataOne, dataPie, countryTwo,
   else if (!isYearSearch && !isDoubleCountry){
     return(
       <div className="graph-wrapper">
-        <h3 className="title-one">{countryOne} Energy Generation Matrix from {yearRange[0]} to {yearRange[1]} ({isOnlyPercentage ? "in %" : "in TWh"})</h3>
+        <h3 className="title-one">{countryOne} Energy Generation Matrix from {yearRange[0]} to {yearRange[1]} ({unit})</h3>
         <StackedBarChart 
-          dataset={dataOrganizer.arrayForEachLabel(dataOne, 8)} 
+          dataset={dataOne} 
           labels={yearRange} 
           countryName={countryOne} 
           isOnlyPercentage ={isOnlyPercentage}
@@ -124,17 +130,17 @@ export default function GraphsManager({countryOne, dataOne, dataPie, countryTwo,
   else{
     return(
       <div className="graph-wrapper">
-        <h3 className="title-one">{countryOne} Energy Generation Matrix from {yearRange[0]} to {yearRange[1]} ({isOnlyPercentage ? "in %" : "in TWh"})</h3>
+        <h3 className="title-one">{countryOne} Energy Generation Matrix from {yearRange[0]} to {yearRange[1]} ({unit})</h3>
         <StackedBarChart 
-          dataset={dataOrganizer.arrayForEachLabel(dataOne, 8)} 
+          dataset={dataOne} 
           labels={yearRange} 
           countryName={countryOne} 
           isOnlyPercentage ={isOnlyPercentage}
         />
 
-        <h3 className="title-two">{countryTwo} Energy Generation Matrix from {yearRange[0]} to {yearRange[1]} ({isOnlyPercentage ? "in %" : "in TWh"})</h3>
+        <h3 className="title-two">{countryTwo} Energy Generation Matrix from {yearRange[0]} to {yearRange[1]} ({unit})</h3>
         <StackedBarChart 
-          dataset={dataOrganizer.arrayForEachLabel(dataTwo, 8)}
+          dataset={dataTwo}
           labels={yearRange}
           countryName={countryTwo}
           isOnlyPercentage ={isOnlyPercentage}
