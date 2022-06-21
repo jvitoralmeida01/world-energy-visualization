@@ -62,21 +62,8 @@ export default function GraphsManager({countryOne, dataOne, dataPie, countryTwo,
     }
   }, [isOnlyPercentage])
 
-  //Instructions for using this visualization 
-  if(countryOne == '' && countryTwo == ''){
-    return(
-      <div className="graph-wrapper">
-        <h1 className="indicator-emoji" style={{height: '200px', width: '200px'}}>👈</h1>
-        <h3> 🗾 Select one <span className="tutorial">(left click)</span> or more <span className="tutorial">(right click)</span> countries to visualize and compare it's data;</h3>
-        <h4 className="tutorial"> 🔍 If you can´t find a given Country on the map, feel free to select it with the input on the top;</h4>
-        <h4 className="tutorial"> 📆 Change the sliders on the top to alter the year range of the data;</h4>
-        <h4 className="tutorial"> 🎯 Click the button on the top-right to toggle between absolute values or percentage values;</h4>
-        <h4 className="tutorial"> ⌨️ You can also click 'Esc' to cancel your selection.</h4>
-      </div>
-    )
-  }
   //Visualization: One country and Year Search
-  else if (isYearSearch && !isDoubleCountry){
+  if (isYearSearch && !isDoubleCountry){
     return (
       <div className="graph-wrapper">
         <h3 className="title-one">{countryOne} Energy Generation Matrix ({unit})</h3>            
