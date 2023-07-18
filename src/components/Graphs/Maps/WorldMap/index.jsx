@@ -66,19 +66,36 @@ function countryHasData(dataset, country, yearRange) {
 
 export default function WorldMap({ parentCountryOne, parentCountryTwo, yearRange, data, setParentCountryOne, setParentCountryTwo }){
 
-    const wrapperRef = useRef();
+    //SVG variables
     const svgRef = useRef();
+    const wrapperRef = useRef();
     const dimensions = useResizeObserver(wrapperRef);
+
+    const [dataset, setDataset] = useState([]);
     const [selectedCountryA, setSelectedCountryA] = useState(null);
     const [selectedCountryB, setSelectedCountryB] = useState(null);
     const [renderTrigger, setRenderTrigger] = useState(false);
     const [hoveredCountry, setHoveredCountry] = useState(null);
-    const [dataset, setDataset] = useState([]);
 
+    //"Esc" button functionality (Remove selected Countries)
+    document.addEventListener("keyup", (event) => {
+      if(event.code === "Escape"){
+        setSelectedCountryA(null);
+        setSelectedCountryB(null);
+      }
+    });
+
+    //Disabling default right mouse button menu
+    document.addEventListener("contextmenu", (event) => {
+      event.preventDefault();
+    })
+
+    //Set Primary Dataset
     useEffect(() => {
       createData().then(data => setDataset(data));
     }, []);
 
+    //Set dimensions of component
     useEffect(() => {
       const {width, height} = dimensions || wrapperRef.current.getBoundingClientRect();
       const svg = select(svgRef.current);
@@ -87,28 +104,16 @@ export default function WorldMap({ parentCountryOne, parentCountryTwo, yearRange
 
     useEffect(() => {
 
-        const colors = ['#b3de69', '#fb8072', '#fdb462', '#80b1d3', '#bc80bd', '#444444', '#ffffb3', '#fccde5',];
         const svg = select(svgRef.current);
-
         const projection = geoMercator().fitSize([dimensions.width, dimensions.height], data).precision(100);
         const pathFactory = geoPath().projection(projection);
-
-        document.addEventListener("keyup", (event) => {
-          if(event.code === "Escape"){
-            setSelectedCountryA(null);
-            setSelectedCountryB(null);
-          }
-        });
-
-        document.addEventListener("contextmenu", (event) => {
-          event.preventDefault();
-        })
+        const colors = ['#b3de69', '#fb8072', '#fdb462', '#80b1d3', '#bc80bd', '#444444', '#ffffb3', '#fccde5',];
 
         svg
           .selectAll('.country')
           .data(data.features)
           .join('path')
-          .on("click", (d, feature) => {	
+          .on("click", (d, feature) => {
             if(selectedCountryB !== feature){
               if(countryHasData(dataset, feature.properties.name, [yearRange[1],yearRange[1]])){
                 if(selectedCountryA === feature){
@@ -137,14 +142,19 @@ export default function WorldMap({ parentCountryOne, parentCountryTwo, yearRange
             }
             
           })
-          .on("mouseover", (d, feature) => {
-            setHoveredCountry(feature);
+          .on("mouseover", (e, d) => {
+            let hoveredCountry = select(e.target);
+            if (countryHasData(dataset, d.properties.name, [yearRange[1], yearRange[1]])){
+              hoveredCountry.attr("fill", "white");
+            }
           })
-          .on("mouseout", () => {
-            setHoveredCountry(null);
+          .on("mouseout", (e, d) => {
+            const deselectedCountry = select(e.target);
+            if (countryHasData(dataset, d.properties.name, [yearRange[1], yearRange[1]])){
+              deselectedCountry.attr("fill", "white");
+            }
           })
           .attr('class', 'country')
-          .transition()
           .attr("fill", feature => {
               if(parentCountryOne === feature.properties.name){
                 setSelectedCountryA(feature)
@@ -176,6 +186,7 @@ export default function WorldMap({ parentCountryOne, parentCountryTwo, yearRange
 
     }, [data, parentCountryOne, parentCountryTwo, hoveredCountry, dataset, renderTrigger, yearRange]);
 
+    //Change year range
     useEffect(() => {
       setSelectedCountryA(null);
       setSelectedCountryB(null);
@@ -183,17 +194,19 @@ export default function WorldMap({ parentCountryOne, parentCountryTwo, yearRange
       setParentCountryTwo('');
     }, [yearRange])
 
+    //Set parent CountryOne
     useEffect(() => {
-      let valueOne = selectedCountryA != null ? selectedCountryA.properties.name : "";
+      let valueOne = selectedCountryA !== null ? selectedCountryA.properties.name : "";
       setParentCountryOne(valueOne);
       setRenderTrigger(!renderTrigger);
-    }, [selectedCountryA, setParentCountryOne]);
+    }, [selectedCountryA]);
 
+    //Set parent CountryTwo
     useEffect(() => {
-      let valueTwo = selectedCountryB != null ? selectedCountryB.properties.name : "";
+      let valueTwo = selectedCountryB !== null ? selectedCountryB.properties.name : "";
       setParentCountryTwo(valueTwo);
       setRenderTrigger(!renderTrigger);
-    }, [selectedCountryB, setParentCountryTwo])
+    }, [selectedCountryB])
 
     return(
         <div ref={wrapperRef} className="map-wrapper">
